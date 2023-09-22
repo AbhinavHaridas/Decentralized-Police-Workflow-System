@@ -10,4 +10,7 @@ router.get("/test", userController.test);
 
 router.get("/all", userController.getAllUsers);
 
+// Insert a new user
+router.post("/insertUser", userController.insertUser);
+
 module.exports = router;
