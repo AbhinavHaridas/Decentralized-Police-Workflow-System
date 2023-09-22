@@ -1,11 +1,26 @@
-import express from 'express';
+// Import Modules
+var express = require("express");
+let app = express();
+require("dotenv").config();
+const cors = require("cors");
 
-const app = express();
+// Adding middleware
+const corsOptions = {
+    origin: "*",
+    credentials: true,
+    optionSuccessStatus: 200,
+};
 
-app.listen(3000, () => {
-    console.log('listening to requests on port 3000');
-});
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-    res.send("flakjsdfl");
+// Import Routes
+const userRoute = require('./routes/users');
+
+// Specify Major Routes
+app.use('/user', userRoute);
+
+app.listen(8000, () => {
+    console.log('Listening to requests on port 8000');
 });
