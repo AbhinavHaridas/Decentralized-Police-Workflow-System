@@ -16,7 +16,15 @@ const insertFir = (req, res) => {
         if (err) res.status(500).json(responseFormatter(500, err, "Error"));
         else {
             // generating a unique hash for a fir entry
-            const hash = generateHash(req.body);
+            const hash = generateHash({
+                user_id,
+                assigned_officer_id,
+                status,
+                crime_type,
+                ipc_section,
+                fir_contents,
+                suspect_details
+            });
 
             res.status(200).json(responseFormatter(
                 200,
