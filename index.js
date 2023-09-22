@@ -17,10 +17,12 @@ app.use(express.urlencoded({ extended: true }));
 
 // Import Routes
 const userRoute = require('./routes/users');
+const officerRoute = require('./routes/officers');
 const firRoute = require('./routes/firs');
 
 // Specify Major Routes
 app.use('/user', userRoute);
+app.use('/officer', officerRoute);
 app.use('/fir', firRoute);
 
 app.listen(8000, () => {
