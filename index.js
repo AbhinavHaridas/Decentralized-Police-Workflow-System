@@ -17,9 +17,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Import Routes
 const userRoute = require('./routes/users');
+const firRoute = require('./routes/firs');
 
 // Specify Major Routes
 app.use('/user', userRoute);
+app.use('/fir', firRoute);
 
 app.listen(8000, () => {
     console.log('Listening to requests on port 8000');
