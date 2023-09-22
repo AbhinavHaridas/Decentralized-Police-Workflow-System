@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 22, 2023 at 08:02 PM
+-- Generation Time: Sep 22, 2023 at 09:38 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.11
 
@@ -64,6 +64,13 @@ CREATE TABLE `evidences` (
   `evidence` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `evidences`
+--
+
+INSERT INTO `evidences` (`id`, `fir_id`, `evidence`) VALUES
+(1, 1, 'JHMS Flop CD');
+
 -- --------------------------------------------------------
 
 --
@@ -85,6 +92,14 @@ CREATE TABLE `firs` (
   `fir_contents` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `firs`
+--
+
+INSERT INTO `firs` (`id`, `user_id`, `assigned_officer_id`, `date_of_offence`, `place_of_offence`, `transaction_id`, `status`, `zonal_code`, `crime_type`, `ipc_section`, `suspect_details`, `fir_contents`) VALUES
+(1, 1, 1, '2021-08-02', 'Mumbai', 'ifhewonfdmfwejbk', 0, 29, 11, '420', 'hakloda', 'A flop actor came and attacked me demanding for hit films'),
+(2, 1, 1, '2021-08-01', 'Mumbai', 'ertrertbfdfs', -1, 29, 11, '420', 'hakloda', 'I rejected this fir just like he was rejected by hit movies');
+
 -- --------------------------------------------------------
 
 --
@@ -103,6 +118,13 @@ CREATE TABLE `officers` (
   `status` int(2) NOT NULL DEFAULT 1 COMMENT '"0- Inactive\r\n1- Active"',
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `officers`
+--
+
+INSERT INTO `officers` (`id`, `full_name`, `dob`, `contact`, `email`, `city`, `zonal_code`, `rank`, `status`, `password`) VALUES
+(1, 'Chulbul Pandey', '1965-11-02', '9023456789', 'beingdabangg@gmail.com', 'Mumbai', 29, 'DCP', 1, '$2b$10$IvoN1IJ9Ky31jrAClJKFaeBfJLY1dwlcaege3JYhj5Xd2rZw7ssR6');
 
 -- --------------------------------------------------------
 
@@ -297,25 +319,25 @@ ALTER TABLE `crime_type`
 -- AUTO_INCREMENT for table `evidences`
 --
 ALTER TABLE `evidences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `firs`
 --
 ALTER TABLE `firs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `officers`
 --
 ALTER TABLE `officers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `zone`
