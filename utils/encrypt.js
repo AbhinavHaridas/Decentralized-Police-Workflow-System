@@ -1,5 +1,6 @@
+require("dotenv").config();
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const saltRounds = parseInt(process.env.SALT_ROUNDS);
 
 // Function to encrypt password
 const encryptPassword = (password) => {
