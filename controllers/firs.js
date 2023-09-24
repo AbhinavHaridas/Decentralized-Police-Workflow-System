@@ -3,6 +3,7 @@ const connection = require("../database");
 
 // Import Utils
 const { responseFormatter } = require("../utils/api");
+const { generateHash } = require("../utils/hash")
 
 // ==== FUNCTIONS START HERE ==== //
 // Function to insert a new fir into the database 
@@ -13,7 +14,26 @@ const insertFir = (req, res) => {
 
     connection.query(query, [user_id, assigned_officer_id, date_of_offence, place_of_offence, transaction_id, status, zonal_code, crime_type, ipc_section, suspect_details, fir_contents], (err, result) => {
         if (err) res.status(500).json(responseFormatter(500, err, "Error"));
-        else res.status(200).json(responseFormatter(200, true, "Success"));
+        else {
+            // generating a unique hash for a fir entry
+            const hash = generateHash({
+                user_id,
+                assigned_officer_id,
+                status,
+                crime_type,
+                ipc_section,
+                fir_contents,
+                suspect_details
+            });
+
+            res.status(200).json(responseFormatter(
+                200,
+                {
+                    success: true,
+                    unique_hash: hash
+                },
+                "Success"));
+        }
     });
 }
 
