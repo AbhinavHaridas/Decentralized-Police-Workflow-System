@@ -1,7 +1,7 @@
 // Importing Modules
 const CryptoJS= require('crypto-js');
 
-// Generating hash based on the value of each attribute of fir request
+// Generating hash based on the value of important attribute of fir request
 const generateHash = (firImpDetails) => {
     let sha256 = CryptoJS.algo.SHA256.create();
 
