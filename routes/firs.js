@@ -1,7 +1,15 @@
 // Module imports
 const express = require("express");
 const router = express.Router();
+const fs = require('fs');
 const multer = require('multer');
+
+if (!fs.existsSync('uploads')) {
+    // create directory 'uploads'
+    fs.mkdirSync('uploads');
+}
+
+// getting file using this
 const upload = multer({ dest: 'uploads' });
 
 // Import Controllers
