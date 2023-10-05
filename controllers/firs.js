@@ -3,7 +3,9 @@ const connection = require("../database");
 
 // Import Utils
 const { responseFormatter } = require("../utils/api");
-const { generateHash } = require("../utils/hash")
+const { generateHash } = require("../utils/hash");
+const { file2ipfs } = require("../utils/file2ipfs");
+
 
 // ==== FUNCTIONS START HERE ==== //
 // Function to insert a new fir into the database 
@@ -52,6 +54,23 @@ const viewFirs = (req, res) => {
     });
 }
 
+// Function in insert a fir file to IPFS using pinata
+const insertFirFile = async (req, res) => {
+    const filePath = req.file.path;
+
+    try {
+        const data = await file2ipfs(filePath);
+
+        res.status(200).json(responseFormatter(
+            200,
+             data,
+            "Success"));
+    } catch (error) {
+        res.status(500).json(responseFormatter(500, "Error"));
+    }
+
+}
+
 module.exports = {
-    insertFir, viewFirs
+    insertFir, viewFirs, insertFirFile
 }
