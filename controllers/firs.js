@@ -10,29 +10,30 @@ const { file2ipfs } = require("../utils/file2ipfs");
 // ==== FUNCTIONS START HERE ==== //
 // Function to insert a new fir into the database 
 const insertFir = (req, res) => {
-    const { user_id, assigned_officer_id, date_of_offence, place_of_offence, transaction_id, status, zonal_code, crime_type, ipc_section, suspect_details, fir_contents } = req.body;
+    const { user_id, assigned_officer_id, date_of_offence, place_of_offence, status, zonal_code, crime_type, ipc_section, suspect_details, fir_contents } = req.body;
+
+    // generating a unique hash for a fir entry
+    const hash = generateHash({
+        user_id,
+        assigned_officer_id,
+        status,
+        crime_type,
+        ipc_section,
+        fir_contents,
+        suspect_details
+    });
 
     const query = "INSERT INTO firs (user_id, assigned_officer_id, date_of_offence, place_of_offence, transaction_id, status, zonal_code, crime_type, ipc_section, suspect_details, fir_contents) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    connection.query(query, [user_id, assigned_officer_id, date_of_offence, place_of_offence, transaction_id, status, zonal_code, crime_type, ipc_section, suspect_details, fir_contents], (err, result) => {
+    connection.query(query, [user_id, assigned_officer_id, date_of_offence, place_of_offence, hash, status, zonal_code, crime_type, ipc_section, suspect_details, fir_contents], (err, result) => {
         if (err) res.status(500).json(responseFormatter(500, err, "Error"));
         else {
-            // generating a unique hash for a fir entry
-            const hash = generateHash({
-                user_id,
-                assigned_officer_id,
-                status,
-                crime_type,
-                ipc_section,
-                fir_contents,
-                suspect_details
-            });
-
             res.status(200).json(responseFormatter(
                 200,
                 {
                     success: true,
-                    unique_hash: hash
+                    unique_hash: hash,
+                    inserted_fir_id: result.insertId
                 },
                 "Success"));
         }
@@ -57,14 +58,22 @@ const viewFirs = (req, res) => {
 // Function in insert a fir file to IPFS using pinata
 const insertFirFile = async (req, res) => {
     const filePath = req.file.path;
+    const firId = req.body['fir_id'];
 
     try {
         const data = await file2ipfs(filePath);
 
-        res.status(200).json(responseFormatter(
-            200,
-             data,
-            "Success"));
+        const query = "INSERT INTO evidences (fir_id, evidence) VALUES (?, ?)";
+
+        connection.query(query, [firId, data.data['IpfsHash']], (err, result) => {
+            if (err) res.status(500).json(responseFormatter(500, err, "Error"));
+            else {
+                res.status(200).json(responseFormatter(
+                    200,
+                    true,
+                    "Success"));
+            }
+        });
     } catch (error) {
         res.status(500).json(responseFormatter(500, "Error"));
     }
