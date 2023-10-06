@@ -12,12 +12,12 @@ const FIRMainPage = () => {
 
         try {
             const userFIR = {
-              id: 1,
-              assignedOfficerId: 2,
-              transactionId: "12345",
+              id: 2,
+              assignedOfficerId: 3,
+              transactionId: "f26d60305dae929ef8640a75e70dd78ab809cfe9",
               status: 0, // You can set the initial status as needed
-              crimeType: 3,
-        };
+              crimeType: 2,
+            };
         
             const result = await contract.methods.acceptFIR(userFIR.id,userFIR.assignedOfficerId,userFIR.transactionId,userFIR.crimeType).send({ from: accounts[0] });
           console.log(result);
@@ -31,7 +31,9 @@ const FIRMainPage = () => {
     
   const viewFIR = async () => {
     try {
-      const result = await contract.methods.FIRList("12345").call({ from: accounts[0] });
+      const result = await contract.methods
+        .FIRList("f26d60305dae929ef8640a75e70dd78ab809cfe9")
+        .call({ from: accounts[0] });
       console.log(result);
     } catch (error) {
       console.error(error);
