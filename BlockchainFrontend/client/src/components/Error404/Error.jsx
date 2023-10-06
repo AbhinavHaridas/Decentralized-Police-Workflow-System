@@ -1,7 +1,7 @@
 import { Container, Title, Text } from "@mantine/core";
 import classes from "./Error.module.css";
 
-export function Error404() {
+function Error404() {
   return (
     <Container className={classes.root}>
       <div className={classes.inner}>
@@ -20,3 +20,5 @@ export function Error404() {
     </Container>
   );
 }
+
+export default Error404;
