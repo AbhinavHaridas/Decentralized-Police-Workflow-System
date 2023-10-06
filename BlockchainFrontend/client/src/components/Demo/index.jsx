@@ -1,6 +1,6 @@
 import useEth from "../../contexts/EthContext/useEth";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
-// import Error404 from "../Error404/Error";
+import Error404 from "../Error404/Error";
 // import FIRMainPage from "./FIRMainPage";
 import FIRFormPage from "./FIRFormPage";
 
@@ -20,8 +20,8 @@ function Demo() {
   return (
     <div className="demo">
       {!state.artifact ? (
-        // <Error404 />
-        <FIRFormPage />
+        <Error404 />
+        // <FIRFormPage />
       ) : !state.contract ? (
         <NoticeWrongNetwork />
       ) : (

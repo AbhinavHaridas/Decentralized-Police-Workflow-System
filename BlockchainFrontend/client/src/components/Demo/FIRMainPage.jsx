@@ -79,4 +79,4 @@ const result = await contract.methods
   );
 }
 
-export default FIRMainPage
+export default FIRMainPage;
