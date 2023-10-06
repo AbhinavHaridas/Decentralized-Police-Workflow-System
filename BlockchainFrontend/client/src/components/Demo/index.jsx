@@ -1,7 +1,7 @@
 import useEth from "../../contexts/EthContext/useEth";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
-import { Error404 } from "../Error404/Error";
-import FIRMainPage from "./FIRMainPage";
+// import Error404 from "../Error404/Error";
+// import FIRMainPage from "./FIRMainPage";
 import FIRFormPage from "./FIRFormPage";
 
 function Demo() {
