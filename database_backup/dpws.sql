@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 22, 2023 at 09:38 PM
+-- Generation Time: Oct 06, 2023 at 09:17 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.11
 
@@ -51,6 +51,28 @@ INSERT INTO `crime_type` (`id`, `crime_name`) VALUES
 (12, 'Rape'),
 (13, 'Molestation'),
 (14, 'Other');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `department`
+--
+
+CREATE TABLE `department` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `department`
+--
+
+INSERT INTO `department` (`id`, `name`) VALUES
+(1, 'Crime Investigation '),
+(2, 'Cyber Security'),
+(3, 'Forensics'),
+(4, 'Anti Narcotics'),
+(5, 'Internal Affairs');
 
 -- --------------------------------------------------------
 
@@ -116,15 +138,16 @@ CREATE TABLE `officers` (
   `zonal_code` int(11) NOT NULL,
   `rank` varchar(255) NOT NULL,
   `status` int(2) NOT NULL DEFAULT 1 COMMENT '"0- Inactive\r\n1- Active"',
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `department_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `officers`
 --
 
-INSERT INTO `officers` (`id`, `full_name`, `dob`, `contact`, `email`, `city`, `zonal_code`, `rank`, `status`, `password`) VALUES
-(1, 'Chulbul Pandey', '1965-11-02', '9023456789', 'beingdabangg@gmail.com', 'Mumbai', 29, 'DCP', 1, '$2b$10$IvoN1IJ9Ky31jrAClJKFaeBfJLY1dwlcaege3JYhj5Xd2rZw7ssR6');
+INSERT INTO `officers` (`id`, `full_name`, `dob`, `contact`, `email`, `city`, `zonal_code`, `rank`, `status`, `password`, `department_id`) VALUES
+(1, 'Chulbul Pandey', '1965-11-02', '9023456789', 'beingdabangg@gmail.com', 'Mumbai', 29, 'DCP', 1, '$2b$10$IvoN1IJ9Ky31jrAClJKFaeBfJLY1dwlcaege3JYhj5Xd2rZw7ssR6', 3);
 
 -- --------------------------------------------------------
 
@@ -276,6 +299,12 @@ ALTER TABLE `crime_type`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `department`
+--
+ALTER TABLE `department`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `evidences`
 --
 ALTER TABLE `evidences`
@@ -314,6 +343,12 @@ ALTER TABLE `zone`
 --
 ALTER TABLE `crime_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `department`
+--
+ALTER TABLE `department`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `evidences`
