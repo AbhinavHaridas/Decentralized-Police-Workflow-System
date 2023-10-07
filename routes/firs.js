@@ -14,7 +14,7 @@ const firController = require("../controllers/firs");
 router.post("/insertFir", firController.insertFir);
 
 // API to view all firs of an officer
-router.get("/viewFirs", firController.viewFirs);
+router.post("/viewFirs", firController.viewFirs);
 
 // route to insert fir file to IPFS using pinata
 router.post('/insertFirFile', upload.single('file'), firController.insertFirFile);
