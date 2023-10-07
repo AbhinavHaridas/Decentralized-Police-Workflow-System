@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import classes from './FIRMainPage.module.css'
 import useEth from "../../contexts/EthContext/useEth";
 
 const FIRMainPage = () => {
   const {
     state: { contract, accounts },
-    } = useEth();
+  } = useEth();
+  const [transactionId, setTransactionId] = useState("");
+
+  const handleTransactionIdChange = (e) => {
+    setTransactionId(e.target.value);
+  }
     
 
     const acceptFIR = async () => {
@@ -14,14 +19,14 @@ const FIRMainPage = () => {
             const userFIR = {
               id: 2,
               assignedOfficerId: 3,
-              transactionId: "f26d60305dae929ef8640a75e70dd78ab809cfe9",
+              transactionId:"jfoigweow83432woeiuhdsiugpt34gtadf3",
               status: 0, // You can set the initial status as needed
               crimeType: 2,
             };
         
             const result = await contract.methods.acceptFIR(userFIR.id,userFIR.assignedOfficerId,userFIR.transactionId,userFIR.crimeType).send({ from: accounts[0] });
           console.log(result);
-          console.log(result?.event?.Result);
+          alert(result?.events?.Result?.returnValues?.message);
         }
         catch (error) {
             console.error(error);
@@ -29,12 +34,14 @@ const FIRMainPage = () => {
         }
     };
     
-  const viewFIR = async () => {
+  const viewFIR = async (transactionId) => {
     try {
       const result = await contract.methods
-        .FIRList("f26d60305dae929ef8640a75e70dd78ab809cfe9")
+        .FIRList(transactionId)
         .call({ from: accounts[0] });
       console.log(result);
+      console.log(result.status);
+      alert(`Your FIR Application has been ${result.status === "1" ? "Accepted" : "Rejected"}`)
     } catch (error) {
       console.error(error);
       throw error;
@@ -43,13 +50,13 @@ const FIRMainPage = () => {
 
   const rejectFIR = async () => {
     try {
-const userFIR = {
-  id: 1,
-  assignedOfficerId: 2,
-  transactionId: "12345",
-  status: 0, // You can set the initial status as needed
-  crimeType: 3,
-};
+    const userFIR = {
+      id: 1,
+      assignedOfficerId: 2,
+      transactionId: "dskfkjhew8723buehudp9373h2dfaf4fds",
+      status: 0, // You can set the initial status as needed
+      crimeType: 3,
+    };
 
 const result = await contract.methods
   .rejectFIR(
@@ -61,7 +68,7 @@ const result = await contract.methods
         .send({ from: accounts[0] });
       
       console.log(result);
-      console.log(result?.events?.Result?.returnValues?.message);
+      alert(result?.events?.Result?.returnValues?.message);
     } catch (error) {
       console.error(error);
       throw error;
@@ -72,9 +79,17 @@ const result = await contract.methods
     
   return (
     <div className={classes.container}>
-      <button className={classes.button} onClick={acceptFIR}>Accept FIR</button>
-      <button className={classes.button} onClick={viewFIR}>View FIR</button>
-      <button className={classes.button} onClick={rejectFIR}>Reject FIR</button>
+      <button className={classes.button} onClick={acceptFIR}>
+        Accept FIR
+      </button>
+      <label>Enter Transaction Id</label>
+      <input onChange={handleTransactionIdChange}></input>
+      <button className={classes.button} onClick={() => viewFIR(transactionId)}>
+        View FIR
+      </button>
+      <button className={classes.button} onClick={rejectFIR}>
+        Reject FIR
+      </button>
     </div>
   );
 }
