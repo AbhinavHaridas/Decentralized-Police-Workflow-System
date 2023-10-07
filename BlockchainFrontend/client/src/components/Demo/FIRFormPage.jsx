@@ -83,7 +83,7 @@ function FIRFormPage() {
         )
           .then((response) => response.json())
           .then((result) => {
-            console.log(result);
+            alert("FIR Submitted Successfully. Your FIR ID is: " + result?.data?.unique_hash);
           })
           .catch((error) => console.log("error", error));
     
@@ -99,7 +99,7 @@ function FIRFormPage() {
 
           <form onSubmit={handleSubmit}>
             <div className={classes.formvaluecontainer}>
-              <label className="form-label">Date of offence</label>
+              <label className={classes.label}>Date of offence</label>
               <input
                 type="date"
                 className={classes.datepicker}
@@ -108,7 +108,6 @@ function FIRFormPage() {
                 onChange={handleDateOfOffenceChange}
               />
             </div>
-
             <div className={classes.formvaluecontainer}>
               <label className={classes.label}>Place Of Offence</label>
               <input
@@ -119,9 +118,8 @@ function FIRFormPage() {
                 onChange={handlePlaceOfOffenceChange}
               />
             </div>
-
             <div className={classes.formvaluecontainer}>
-              <label className="form-label">Zonal Code</label>
+              <label className={classes.label}>Zonal Code</label>
               <input
                 type="number"
                 className={classes.zonalcode}
@@ -130,9 +128,8 @@ function FIRFormPage() {
                 onChange={handleZonalCodeChange}
               />
             </div>
-
             <div className={classes.formvaluecontainer}>
-              <label className="form-label">Crime Type</label>
+              <label className={classes.label}>Crime Type</label>
               <select
                 className={classes.crimetypedropdown}
                 id="crimetype"
@@ -156,9 +153,8 @@ function FIRFormPage() {
                 <option value="14">Other</option>
               </select>
             </div>
-
             <div className={classes.formvaluecontainer}>
-              <label className="form-label">IPC Section</label>
+              <label className={classes.label}>IPC Section</label>
               <input
                 type="text"
                 className={classes.zonalcode}
@@ -167,9 +163,8 @@ function FIRFormPage() {
                 onChange={handleIpcSectionChange}
               />
             </div>
-
             <div className={classes.formvaluecontainer}>
-              <label className="form-label">FIR Contents</label>
+              <label className={classes.label}>FIR Contents</label>
               <textarea
                 className={classes.textarea}
                 id="firContents"
@@ -178,9 +173,8 @@ function FIRFormPage() {
                 onChange={handlefirContentsChange}
               />
             </div>
-
             <div className={classes.formvaluecontainer}>
-              <label className="form-label">Suspect Details</label>
+              <label className={classes.label}>Suspect Details</label>
               <textarea
                 className={classes.textarea}
                 id="suspectdetails"
@@ -189,9 +183,8 @@ function FIRFormPage() {
                 onChange={handleSuspectDetailsChange}
               />
             </div>
-
             <div className={classes.formvaluecontainer}>
-              <label htmlFor="cvFile" className="form-label">
+              <label htmlFor="cvFile" className={classes.label}>
                 Upload Evidence
               </label>
               <input
@@ -199,12 +192,11 @@ function FIRFormPage() {
                 className={classes.chooseFilebtn}
                 id="cvFile"
                 onChange={handleCvFileChange}
-                />
+              />
             </div>
-            <div className={classes.smallwarningtext}>
+           { !cvFile && <div className={classes.smallwarningtext}>
               *Upload your Evidence here. Max file size 50 MB
-            </div>
-
+            </div>}
             <button type="submit" className={classes.button}>
               Send Application
             </button>
