@@ -1,11 +1,8 @@
 .main {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    background-color: beige;
-    padding: 2rem;
-    border-radius: 2rem;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  background-color: beige;
+  padding: 2rem;
+  border-radius: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
-
-
-
