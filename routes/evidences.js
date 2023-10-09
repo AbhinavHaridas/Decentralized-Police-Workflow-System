@@ -9,4 +9,7 @@ const evidencesController= require("../controllers/evidences");
 // API to view all evidences
 router.get("/allEvidences", evidencesController.viewAllEvidences);
 
+// API to check if an evidence is accessible to a department
+router.post("/viewCaseEvidence", evidencesController.viewCaseEvidence);
+
 module.exports = router;
