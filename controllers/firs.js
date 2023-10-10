@@ -41,14 +41,54 @@ const insertFir = (req, res) => {
 
 // Function to view all firs of an officer
 const viewFirs = (req, res) => {
-    const { officer_id, status } = req.query;
+    const { officer_id, status, start_date, end_date, place_of_offence, zonal_code, crime_type, ipc_section } = req.body;
 
     let query = "SELECT * FROM firs WHERE assigned_officer_id = ?";
+    const queryParams = [officer_id];
 
     // Check if status is provided
-    if (status) query += " AND status = ?";
+    if (status != undefined || status != null) {
+        query += " AND status = ?"
+        queryParams.push(status);
+    }
 
-    connection.query(query, [officer_id, status], (err, result) => {
+    // Check if start_date is provided
+    if (start_date) {
+        query += " AND date_of_offence >= ?"; 
+        queryParams.push(start_date);
+    }
+
+    // // Check if end_date is provided
+    if (end_date) {
+        query += " AND date_of_offence <= ?"; 
+        queryParams.push(end_date);
+    }
+
+    // // Check if place_of_offence is provided
+    if (place_of_offence) {
+        query += " AND LOWER(place_of_offence) = LOWER(?)"; 
+        queryParams.push(place_of_offence);
+    }
+
+    // // Check if zonal_code is provided
+    if (zonal_code) {
+        query += " AND zonal_code = ?"; 
+        queryParams.push(zonal_code);
+    }
+
+    // // Check if crime_type is provided
+    if (crime_type) {
+        query += " AND crime_type = ?";
+        queryParams.push(crime_type);
+    }
+
+    // Check if ipc_section is provided
+    if (ipc_section) {
+        query += " AND ipc_section = ?"; 
+        queryParams.push(ipc_section);
+    }
+
+    connection.query(query, queryParams, (err, result) => {
         if (err) res.status(500).json(responseFormatter(500, err, "Error"));
         else res.status(200).json(responseFormatter(200, result, "Success"));
     });
