@@ -11,11 +11,6 @@ module.exports = {
     path: path.resolve(__dirname, "build"),
   },
   resolve: { extensions },
-  // devServer: {
-  //   client: {
-  //     overlay: false,
-  //   },
-  // },
   module: {
     rules: [
       {
@@ -38,6 +33,11 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    hot: true,
+    liveReload: true,
+    client: {
+      overlay: false,
+    }
   },
   plugins: [
     new EslintWebpackPlugin({ extensions }),
