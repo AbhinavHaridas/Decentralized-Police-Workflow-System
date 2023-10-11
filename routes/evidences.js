@@ -12,4 +12,7 @@ router.get("/allEvidences", evidencesController.viewAllEvidences);
 // API to check if an evidence is accessible to a department
 router.post("/viewCaseEvidence", evidencesController.viewCaseEvidence);
 
+// API to add access to an evidence for departments
+router.post("/addEvidenceAccess", evidencesController.addEvidenceAccess);
+
 module.exports = router;

@@ -47,6 +47,30 @@ const viewCaseEvidence = (req, res) => {
     
 }
 
+// Function to add access to an evidence for departments
+const addEvidenceAccess = (req, res) => {
+    const { evidence_id, department_ids } = req.body;
+
+    // Handle missing parameters
+    if (!evidence_id || !department_ids) {
+        res.status(400).json(responseFormatter(400, null, "Missing parameters"));
+    }
+
+    // Create an array of arrays to be inserted
+    const values = department_ids.map(department_id => [evidence_id, department_id]);
+    const query = "INSERT INTO access (evidence_id, department_id) VALUES ?";
+
+    connection.query(query, [values], (err, result) => {
+        if (err) {
+            res.status(500).json(responseFormatter(500, null, "Database error"));
+            return;
+        }
+
+        res.status(200).json(responseFormatter(200, true, "Success"));
+    });
+};
+
+
 module.exports = {
-    viewAllEvidences, viewCaseEvidence
+    viewAllEvidences, viewCaseEvidence, addEvidenceAccess
 }
