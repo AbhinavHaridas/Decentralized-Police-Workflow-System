@@ -82,8 +82,27 @@ function FIRFormPage() {
           requestOptions
         )
           .then((response) => response.json())
-          .then((result) => {
+          .then(async (result) => {
             alert("FIR Submitted Successfully. Your FIR ID is: " + result?.data?.unique_hash);
+
+            try {
+              // generating a formData object to store file and firId
+              const formData = new FormData();
+              formData.append('file', cvFile);
+              formData.append('fir_id', result?.data['inserted_fir_id']);
+
+              fetch('http://localhost:8000/fir/insertFirFile', {
+                method: 'POST',
+                body: formData
+              }).then((response) => response.json())
+                .then((result) => {
+                  console.log('Success:', result);
+                });
+
+            } catch(e) {
+              console.error(e);
+            }
+
           })
           .catch((error) => console.log("error", error));
     
