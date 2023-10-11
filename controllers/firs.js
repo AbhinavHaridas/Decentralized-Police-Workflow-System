@@ -43,7 +43,7 @@ const insertFir = (req, res) => {
 const viewFirs = (req, res) => {
     const { officer_id, status, start_date, end_date, place_of_offence, zonal_code, crime_type, ipc_section } = req.body;
 
-    let query = "SELECT * FROM firs WHERE assigned_officer_id = ?";
+    let query = "SELECT * FROM firs WHERE assigned_officer_id = ? ORDER BY date_of_offence DESC";
     const queryParams = [officer_id];
 
     // Check if status is provided
@@ -119,6 +119,39 @@ const insertFirFile = async (req, res) => {
 
 }
 
+// Function to get all dropdown values
+const getDropdownValues = (req, res) => {
+    values = {}
+
+    const query = "SELECT DISTINCT zonal_code FROM firs";
+
+    connection.query(query, (err, result) => {
+        if (err) res.status(500).json(responseFormatter(500, err, "Error"));
+        else {
+            values["zonal_codes"] = result.map((value) => value['zonal_code']);
+
+            const query = "SELECT DISTINCT name FROM `zone` `z` INNER JOIN `firs` `f` ON `z`.`id` = `f`.`zonal_code`;";
+
+            connection.query(query, (err, result) => {
+                if (err) res.status(500).json(responseFormatter(500, err, "Error"));
+                else {
+                    values["zone_names"] = result.map((value) => value['name']);
+                    const query = "SELECT DISTINCT ipc_section FROM firs";
+
+                    connection.query(query, (err, result) => {
+                        if (err) res.status(500).json(responseFormatter(500, err, "Error"));
+                        else {
+                            values["ipc_sections"] = result.map((value) => value['ipc_section']);
+
+                            res.status(200).json(responseFormatter(200, values, "Success"));
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
 module.exports = {
-    insertFir, viewFirs, insertFirFile
+    insertFir, viewFirs, insertFirFile, getDropdownValues
 }

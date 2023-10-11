@@ -19,4 +19,7 @@ router.post("/viewFirs", firController.viewFirs);
 // route to insert fir file to IPFS using pinata
 router.post('/insertFirFile', upload.single('file'), firController.insertFirFile);
 
+// API to get all the dropdown values
+router.get("/getDropdownValues", firController.getDropdownValues);
+
 module.exports = router;
