@@ -104,12 +104,13 @@ const insertFirFile = async (req, res) => {
 
         const query = "INSERT INTO evidences (fir_id, evidence) VALUES (?, ?)";
 
+        // Return inserted row id
         connection.query(query, [firId, data.data['IpfsHash']], (err, result) => {
             if (err) res.status(500).json(responseFormatter(500, err, "Error"));
             else {
                 res.status(200).json(responseFormatter(
                     200,
-                    true,
+                    result.insertId,
                     "Success"));
             }
         });
