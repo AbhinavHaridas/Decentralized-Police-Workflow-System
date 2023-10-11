@@ -41,7 +41,7 @@ const insertFir = (req, res) => {
 
 // Function to view all firs of an officer
 const viewFirs = (req, res) => {
-    const { officer_id, status, start_date, end_date, place_of_offence, zonal_code, crime_type, ipc_section } = req.body;
+    const { officer_id, status, start_date, end_date, place_of_offence, zonal_code, crime_type, ipc_section, transaction_id } = req.body;
 
     let query = "SELECT * FROM firs WHERE assigned_officer_id = ?";
     const queryParams = [officer_id];
@@ -86,6 +86,12 @@ const viewFirs = (req, res) => {
     if (ipc_section) {
         query += " AND ipc_section = ?"; 
         queryParams.push(ipc_section);
+    }
+
+    // Check if transaction_id is provided
+    if (transaction_id) {
+        query += " AND transaction_id = ?";
+        queryParams.push(transaction_id);
     }
 
     query += " ORDER BY date_of_offence DESC";
