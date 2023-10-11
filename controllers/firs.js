@@ -124,29 +124,21 @@ const insertFirFile = async (req, res) => {
 const getDropdownValues = (req, res) => {
     values = {}
 
-    const query = "SELECT DISTINCT zonal_code FROM firs";
+    const query = "SELECT zonal_code as zonal_code, name as zonal_name FROM `zone` `z` INNER JOIN `firs` `f` ON `z`.`id` = `f`.`zonal_code` GROUP BY zonal_code";
 
     connection.query(query, (err, result) => {
         if (err) res.status(500).json(responseFormatter(500, err, "Error"));
         else {
-            values["zonal_codes"] = result.map((value) => value['zonal_code']);
-
-            const query = "SELECT DISTINCT name FROM `zone` `z` INNER JOIN `firs` `f` ON `z`.`id` = `f`.`zonal_code`;";
+            values["zones"] = result.map((value) => ({ zonal_code: value['zonal_code'], zonal_name: value['zonal_name'] }));
+            
+            const query = "SELECT DISTINCT ipc_section FROM firs";
 
             connection.query(query, (err, result) => {
                 if (err) res.status(500).json(responseFormatter(500, err, "Error"));
                 else {
-                    values["zone_names"] = result.map((value) => value['name']);
-                    const query = "SELECT DISTINCT ipc_section FROM firs";
+                    values["ipc_sections"] = result.map((value) => value['ipc_section']);
 
-                    connection.query(query, (err, result) => {
-                        if (err) res.status(500).json(responseFormatter(500, err, "Error"));
-                        else {
-                            values["ipc_sections"] = result.map((value) => value['ipc_section']);
-
-                            res.status(200).json(responseFormatter(200, values, "Success"));
-                        }
-                    });
+                    res.status(200).json(responseFormatter(200, values, "Success"));
                 }
             });
         }
