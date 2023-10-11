@@ -6,6 +6,7 @@ import DatePicker from "./DatePicker";
 
 function AllFIRSPage() {
   const [jsonData, setJsonData] = useState(null);
+  const [dropDownData, setDropDownData] = useState(null);
   const [selectedStartDate, setSelectedStartDate] = useState("");
   const [selectedEndDate, setSelectedEndDate] = useState("");
   const [status, setStatus] = useState("");
@@ -16,17 +17,58 @@ function AllFIRSPage() {
 	const [isFilterApplied, setIsFilterApplied] = useState(false);
 	const [resetDatePicker, setResetDatePicker] = useState(false);
 
-  useEffect(() => {
-    const fetchAPI = async () => {
-      const response = await fetch(
-        "http://localhost:8000/fir/viewFirs?officer_id=1"
-      );
-      const json = await response.json();
-      setJsonData(json);
-    };
 
-    fetchAPI();
-  }, []);
+      const fetchAPI = async () => {
+        const FIRObj = {
+          officer_id: 1,
+          status: status,
+          start_date: selectedStartDate,
+          end_date: selectedEndDate,
+          place_of_offence: placeOfOffence,
+          zonal_code: zonalCode,
+          crime_type: crimeType,
+          ipc_section: ipcSection,
+        };
+
+        var requestOptions = {
+          method: "POST",
+          body: JSON.stringify(FIRObj),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          redirect: "follow",
+        };
+
+        const response = await fetch(
+          "http://localhost:8000/fir/viewFirs",
+          requestOptions
+        );
+        const json = await response.json();
+        setJsonData(json);
+  };
+  
+  const getDropDownValues = async () => {
+    const response = await fetch(
+      "http://localhost:8000/fir/getDropDownValues"
+    );
+    const json = await response.json();
+    console.log(json);
+    setDropDownData(json?.data);
+  };
+
+
+      useEffect(() => {
+        getDropDownValues();
+        fetchAPI();
+      }, []);
+
+  useEffect(() => {
+      if (resetDatePicker) {
+        fetchAPI();
+        setResetDatePicker(false); // Reset it here
+      }
+  }, [resetDatePicker]);
+  
 
   const handleStatusChange = (event) => {
     setStatus(event.target.value);
@@ -63,18 +105,12 @@ function AllFIRSPage() {
     setCrimeType("");
     setIpcSection("");
 	  setIsFilterApplied(false);
-	  setResetDatePicker(true);
+    setResetDatePicker(true);
   };
 
   const applyFilters = () => {
-    // Apply filters
-    console.log("Start Date:", selectedStartDate);
-    console.log("End Date:", selectedEndDate);
-    console.log("Status:", status);
-    console.log("Place of Offence:", placeOfOffence);
-    console.log("Zonal Code:", zonalCode);
-    console.log("Crime Type:", crimeType);
-    console.log("IPC Section:", ipcSection);
+    // Apply filters and fetch data
+    fetchAPI();
   };
 
   return (
@@ -89,6 +125,7 @@ function AllFIRSPage() {
                 className={`btn btn-block btn-primary ${
                   isFilterApplied ? "button-active" : "button-inactive"
                 }`}
+                disabled={!isFilterApplied}
               >
                 Apply Filter
               </button>
@@ -99,6 +136,7 @@ function AllFIRSPage() {
                 className={`btn btn-block btn-primary ${
                   isFilterApplied ? "button-active" : "button-inactive"
                 }`}
+                disabled={!isFilterApplied}
               >
                 Reset Filter
               </button>
@@ -111,8 +149,8 @@ function AllFIRSPage() {
               <select
                 data-filter="make"
                 className="filter-make filter form-control"
-							  onChange={handleStatusChange}
-							  value={status}
+                onChange={handleStatusChange}
+                value={status}
               >
                 <option value="">Select Status</option>
                 <option value="0">Pending</option>
@@ -122,36 +160,25 @@ function AllFIRSPage() {
             </div>
             <div className="form-group col-sm-3 col-xs-6">
               <select
-                data-filter="model"
-                className="filter-model filter form-control"
-							  onChange={handlePlaceOfOffenceChange}
-							  value={placeOfOffence}
-              >
-                <option value="">Select Place of Offence</option>
-                <option value="Mumbra">Mumbra</option>
-                <option value="Thane">Thane</option>
-                <option value="Kalyan">Kalyan</option>
-              </select>
-            </div>
-            <div className="form-group col-sm-3 col-xs-6">
-              <select
                 data-filter="type"
                 className="filter-type filter form-control"
-							  onChange={handleZonalCodeChange}
-							  value={zonalCode}
+                onChange={handleZonalCodeChange}
+                value={zonalCode}
               >
                 <option value="">Select Zonal Code</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="4">4</option>
+                {
+                  dropDownData ? dropDownData["zones"].map((zones,key) => {
+                    return <option value={zones['zonal_code']} key={key}>{zones['zonal_name']}</option>;
+                  }): null
+                }
               </select>
             </div>
             <div className="form-group col-sm-3 col-xs-6">
               <select
                 data-filter="price"
                 className="filter-price filter form-control"
-							  onChange={handleCrimeTypeChange}
-							  value={crimeType}
+                onChange={handleCrimeTypeChange}
+                value={crimeType}
               >
                 <option value="">Select Crime Type</option>
                 <option value="1">Murder</option>
@@ -174,25 +201,26 @@ function AllFIRSPage() {
               <select
                 data-filter="type"
                 className="filter-type filter form-control"
-							  onChange={handleIpcSectionChange}
-							  value={ipcSection}
+                onChange={handleIpcSectionChange}
+                value={ipcSection}
               >
                 <option value="">Select IPC Section</option>
-                <option value="">Show All</option>
-                <option value="412">412</option>
-                <option value="102">102</option>
-                <option value="114">114</option>
+                {dropDownData ? dropDownData["ipc_sections"].map((ipcSection) => {
+                  return <option value={ipcSection} key={ipcSection}>{ipcSection}</option>;
+                }) : null}
               </select>
             </div>
             <DatePicker
               placeholder="Enter Start date"
-						  onDateSelect={setSelectedStartDate}
-						  reset={resetDatePicker}
+              onDateSelect={setSelectedStartDate}
+              reset={resetDatePicker}
+              setIsFilterApplied={setIsFilterApplied}
             />
             <DatePicker
               placeholder="Enter End date"
-						  onDateSelect={setSelectedEndDate}
-						  reset={resetDatePicker}
+              onDateSelect={setSelectedEndDate}
+              reset={resetDatePicker}
+              setIsFilterApplied={setIsFilterApplied}
             />
           </div>
         </div>

@@ -43,11 +43,11 @@ const insertFir = (req, res) => {
 const viewFirs = (req, res) => {
     const { officer_id, status, start_date, end_date, place_of_offence, zonal_code, crime_type, ipc_section } = req.body;
 
-    let query = "SELECT * FROM firs WHERE assigned_officer_id = ? ORDER BY date_of_offence DESC";
+    let query = "SELECT * FROM firs WHERE assigned_officer_id = ?";
     const queryParams = [officer_id];
 
     // Check if status is provided
-    if (status != undefined || status != null) {
+    if (status) {
         query += " AND status = ?"
         queryParams.push(status);
     }
@@ -87,6 +87,8 @@ const viewFirs = (req, res) => {
         query += " AND ipc_section = ?"; 
         queryParams.push(ipc_section);
     }
+
+    query += " ORDER BY date_of_offence DESC";
 
     connection.query(query, queryParams, (err, result) => {
         if (err) res.status(500).json(responseFormatter(500, err, "Error"));

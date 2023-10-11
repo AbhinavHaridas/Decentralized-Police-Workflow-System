@@ -27,8 +27,8 @@ function ViewEvidencesPage() {
 			<h1>Evidences</h1>
 			<div className={styles.evidencesContainer}>
 				{
-					jsonData ? jsonData['data'].map((evidence)=> {
-						return <SingleEvidence {...evidence} />
+					jsonData ? jsonData['data'].map((evidence,key)=> {
+						return <SingleEvidence key={key} {...evidence} />
 					}): null
 				}
 			</div>

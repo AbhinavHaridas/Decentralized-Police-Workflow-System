@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import './DatePicker.css';
+import "./DatePicker.css";
 
-function DatePicker({ placeholder, onDateSelect, reset }) {
+function DatePicker({ placeholder, onDateSelect, reset, setIsFilterApplied }) {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
 
@@ -20,6 +20,7 @@ function DatePicker({ placeholder, onDateSelect, reset }) {
   };
 
   const closeDatePicker = () => {
+    setIsFilterApplied(true);
     setIsDatePickerOpen(false);
     // Call the callback function with the selected date
     onDateSelect(selectedDate);
