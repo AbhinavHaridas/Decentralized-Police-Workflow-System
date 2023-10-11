@@ -6,6 +6,8 @@ import AllFIRSPage from "./components/Demo/AllFIRSPage";
 import FIRMainPage from "./components/Demo/FIRMainPage";
 import Error404 from "./components/Error404/Error";
 import ViewEvidencesPage from "./components/Demo/ViewEvidencesPage";
+import LoginPage from "./components/Demo/LoginPage";
+import FIRFormPage from "./components/Demo/FIRFormPage";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
                 <Route path="/error" element={<Error404 />} />
                 <Route path="/blockchain" element={<FIRMainPage />} />
                 <Route path="/viewevidence" element={<ViewEvidencesPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/filefir" element={<FIRFormPage />} />
               </Routes>
             </BrowserRouter>
           </div>
