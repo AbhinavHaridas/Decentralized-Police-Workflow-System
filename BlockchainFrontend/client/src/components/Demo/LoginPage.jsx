@@ -9,7 +9,11 @@ const LoginPage = () => {
   const toggleForm = (e) => {
     e.preventDefault();
     navigate("/signup");
+  };
 
+  const toggleViewFIRStatus = (e) => {
+    e.preventDefault();
+    navigate("/viewstatus");
   };
 
   const handleLogin = (e) => {
@@ -34,7 +38,7 @@ const LoginPage = () => {
         if (result?.data) {
           alert("Login Successful");
           navigate("/viewfir",{
-            state: { data: result?.data },
+            state: { ...result?.data },
           });
         } else {
           alert("Invalid Credentials");
@@ -68,6 +72,7 @@ const LoginPage = () => {
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position:relative;
           }
           .form-container {
             width: 600px;
@@ -118,15 +123,20 @@ const LoginPage = () => {
             text-decoration: none;
             color: #b38bff;
             font-size: 18px;
-            transition: color 0.2s ease-in-out;
             cursor:pointer;
           }
           a:hover {
-            color: #8c5fb2;
           }
           p {
             text-align: center;
             margin: 8px;
+          }
+
+          .viewfir{
+            position:absolute;
+            right:0px;
+            bottom:0px;
+            font-size:14px;
           }
         `}
       </style>
@@ -159,6 +169,17 @@ const LoginPage = () => {
             Don't have an account?{" "}
             <a href="/signup" onClick={toggleForm} id="signup-link">
               Sign up
+            </a>
+          </p>
+          <p className="viewfir">
+            Not an Officer?{" "}
+            <a
+              href="/signup"
+              onClick={toggleViewFIRStatus}
+              id="signup-link"
+              style={{ fontSize: 14 }}
+            >
+              View FIR Status
             </a>
           </p>
         </div>

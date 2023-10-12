@@ -125,7 +125,7 @@ const viewRequests = (req, res) => {
     if (!owner_id)
         return res.json(responseFormatter(400, null, "Missing fields"));
 
-    query = "SELECT `r`.`evidence_id`, `e`.`evidence`, `d`.`name` FROM `requests` `r` INNER JOIN evidences `e` ON `e`.`id` = `r`.`evidence_id` INNER JOIN departments `d` ON `d`.`id` = `r`.`requesting_id` WHERE `r`.`owner_id` = ?"
+    query = "SELECT `r`.`evidence_id`, `r`.`requesting_id`, `e`.`evidence`, `d`.`name` FROM `requests` `r` INNER JOIN evidences `e` ON `e`.`id` = `r`.`evidence_id` INNER JOIN departments `d` ON `d`.`id` = `r`.`requesting_id` WHERE `r`.`owner_id` = ?"
 
     // If requesting_id is not provided, return all requests for owner_id
     if (!requesting_id) {
