@@ -21,7 +21,7 @@ function AllFIRSPage() {
 
 
       const fetchAPI = async () => {
-        const FIRObj = {
+        const firObj = {
           officer_id: 1,
           status: status,
           start_date: selectedStartDate,
@@ -33,7 +33,7 @@ function AllFIRSPage() {
 
         var requestOptions = {
           method: "POST",
-          body: JSON.stringify(FIRObj),
+          body: JSON.stringify(firObj),
           headers: {
             "Content-Type": "application/json",
           },

@@ -8,6 +8,8 @@ const LoginPage = () => {
 
   const toggleForm = (e) => {
     e.preventDefault();
+    navigate("/signup");
+
   };
 
   const handleLogin = (e) => {
@@ -155,7 +157,7 @@ const LoginPage = () => {
           </form>
           <p>
             Don't have an account?{" "}
-            <a href="#" onClick={toggleForm} id="signup-link">
+            <a href="/signup" onClick={toggleForm} id="signup-link">
               Sign up
             </a>
           </p>

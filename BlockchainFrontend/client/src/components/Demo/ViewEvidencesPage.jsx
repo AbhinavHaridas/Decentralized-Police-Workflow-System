@@ -7,7 +7,7 @@ function ViewEvidencesPage() {
 
     const location = useLocation();
 
-    const firId = location.state.firId;
+    const firId = location?.state?.firId;
 
     console.log("FIR ID:", firId);
   

@@ -9,6 +9,7 @@ import ViewEvidencesPage from "./components/Demo/ViewEvidencesPage";
 import LoginPage from "./components/Demo/LoginPage";
 import FIRFormPage from "./components/Demo/FIRFormPage";
 import EvidenceAccessPage from "./components/Demo/EvidenceAccessPage";
+import SignupPage from "./components/Demo/SignupPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/filefir" element={<FIRFormPage />} />
                 <Route path='/evidenceaccess' element={<EvidenceAccessPage />} />
+                <Route path='/signup' element={<SignupPage />} />
               </Routes>
             </BrowserRouter>
           </div>
