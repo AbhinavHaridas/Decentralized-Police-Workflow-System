@@ -31,8 +31,7 @@ const LoginPage = () => {
       .then((result) => {
         if (result?.data) {
           alert("Login Successful");
-          navigate({
-            pathname: "viewfir",
+          navigate("/viewfir",{
             state: { data: result?.data },
           });
         } else {
