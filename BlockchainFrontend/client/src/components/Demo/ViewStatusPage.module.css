@@ -1,0 +1,42 @@
+.main {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.title {
+   font-family: 'Poppins', sans-serif;
+   text-align: center;
+}
+
+.inputDiv {
+   width: 50rem;
+   padding: 2rem;
+   height: 5rem;
+   margin-top: 2rem;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.inputField {
+   width: 30rem;
+   padding: 1rem;
+}
+
+.inputButton {
+   width: 15rem;
+   padding: 1rem;
+}
+
+.FIR {
+   width: 15rem;
+   background-color: beige;
+   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+   border-radius: 2rem;
+   margin-top: 2rem;
+   padding: 1rem;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}

@@ -1,11 +1,10 @@
 .main {
-    margin-left: 2rem;
-    margin-right: 2rem;
     padding: 2rem;
     background-color: beige;
     border-radius: 2rem;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     transition: 0.2s;
+    margin-bottom: 5%;
 }
 
 a {
@@ -14,14 +13,13 @@ a {
 }
 
 .mainNotAllowed {
-    margin-left: 2rem;
-    margin-right: 2rem;
-    padding: 2rem;
+    padding: 2rem 2rem 0 2rem;
     border-radius: 2rem;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     transition: 0.2s;
     background-color: whitesmoke;
     user-select: none;
+    margin-bottom: 5%;
 }
 
 

@@ -8,6 +8,12 @@ const LoginPage = () => {
 
   const toggleForm = (e) => {
     e.preventDefault();
+    navigate("/signup");
+  };
+
+  const toggleViewFIRStatus = (e) => {
+    e.preventDefault();
+    navigate("/viewstatus");
   };
 
   const handleLogin = (e) => {
@@ -31,9 +37,8 @@ const LoginPage = () => {
       .then((result) => {
         if (result?.data) {
           alert("Login Successful");
-          navigate({
-            pathname: "viewfir",
-            state: { data: result?.data },
+          navigate("/viewfir",{
+            state: { ...result?.data },
           });
         } else {
           alert("Invalid Credentials");
@@ -67,6 +72,7 @@ const LoginPage = () => {
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position:relative;
           }
           .form-container {
             width: 600px;
@@ -117,15 +123,20 @@ const LoginPage = () => {
             text-decoration: none;
             color: #b38bff;
             font-size: 18px;
-            transition: color 0.2s ease-in-out;
             cursor:pointer;
           }
           a:hover {
-            color: #8c5fb2;
           }
           p {
             text-align: center;
             margin: 8px;
+          }
+
+          .viewfir{
+            position:absolute;
+            right:0px;
+            bottom:0px;
+            font-size:14px;
           }
         `}
       </style>
@@ -134,7 +145,7 @@ const LoginPage = () => {
         <div className="form-container" style={{ display: "block" }}>
           <h1>Login</h1>
           <form>
-            <label for="username">Email/Phone No.</label>
+            <label htmlFor="username">Email/Phone No.</label>
             <input
               type="text"
               id="username"
@@ -143,7 +154,7 @@ const LoginPage = () => {
               onChange={handlePhoneEmailChange}
               required
             />
-            <label for="password">Password</label>
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
@@ -156,8 +167,19 @@ const LoginPage = () => {
           </form>
           <p>
             Don't have an account?{" "}
-            <a href="#" onClick={toggleForm} id="signup-link">
+            <a href="/signup" onClick={toggleForm} id="signup-link">
               Sign up
+            </a>
+          </p>
+          <p className="viewfir">
+            Not an Officer?{" "}
+            <a
+              href="/signup"
+              onClick={toggleViewFIRStatus}
+              id="signup-link"
+              style={{ fontSize: 14 }}
+            >
+              View FIR Status
             </a>
           </p>
         </div>

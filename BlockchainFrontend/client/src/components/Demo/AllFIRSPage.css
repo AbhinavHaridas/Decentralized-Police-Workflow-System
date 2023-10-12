@@ -5,7 +5,7 @@ body {
 .search-filter-container{
         display: flex;
     flex-direction: column;
-    width:250%;
+    width:190%;
 }
 
 .search-form{

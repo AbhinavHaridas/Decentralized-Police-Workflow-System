@@ -20,12 +20,14 @@ const userRoute = require('./routes/users');
 const officerRoute = require('./routes/officers');
 const firRoute = require('./routes/firs');
 const evidenceRoute = require('./routes/evidences');
+const requestsRoute = require('./routes/requests');
 
 // Specify Major Routes
 app.use('/user', userRoute);
 app.use('/officer', officerRoute);
 app.use('/fir', firRoute);
 app.use('/evidence', evidenceRoute);
+app.use('/requests', requestsRoute);
 
 app.listen(8000, () => {
     console.log('Listening to requests on port 8000');

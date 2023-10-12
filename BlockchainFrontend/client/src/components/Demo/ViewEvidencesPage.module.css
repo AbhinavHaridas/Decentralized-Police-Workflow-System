@@ -1,14 +1,17 @@
 .main {
     display: flex;
     flex-direction: column;
-}
-
-.main > h1 {
-    margin-left: 30rem;
-    position: fixed;
+    align-items: center;
+    /* justify-items: space-around; */
 }
 
 .evidencesContainer {
     display: flex;
-    margin-top: 10rem;
+    flex-direction: column;
+    margin-bottom: 15%;
+}
+
+.heading {
+    text-align: center;
+    margin-bottom: 3%;
 }

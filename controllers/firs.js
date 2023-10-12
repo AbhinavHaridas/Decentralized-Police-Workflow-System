@@ -106,6 +106,7 @@ const viewFirs = (req, res) => {
 const insertFirFile = async (req, res) => {
     const filePath = req.file.path;
     const firId = req.body['fir_id'];
+    const deptId = req.body['dept_id'];
 
     try {
         const data = await file2ipfs(filePath);
@@ -114,12 +115,26 @@ const insertFirFile = async (req, res) => {
 
         // Return inserted row id
         connection.query(query, [firId, data.data['IpfsHash']], (err, result) => {
-            if (err) res.status(500).json(responseFormatter(500, err, "Error"));
+            if (err) {
+                res.status(500).json(responseFormatter(500, err, "Error"));
+                return;
+            }
             else {
-                res.status(200).json(responseFormatter(
-                    200,
-                    result.insertId,
-                    "Success"));
+                connection.query(
+                  "INSERT INTO access (evidence_id, department_id) VALUES (?, ?)",
+                  [result.insertId, deptId], (err, result) => {
+                    if (err) {
+                        res.status(500).json(responseFormatter(500, err, "Error"));
+                        return;
+                    }
+                    else{
+                        res.status(200).json(responseFormatter(
+                            200,
+                            result.insertId,
+                            "Success"));
+                    }
+                  }
+                );
             }
         });
     } catch (error) {
@@ -153,6 +168,18 @@ const getDropdownValues = (req, res) => {
     });
 }
 
+const changeFirStatus = (req, res) => {
+    const fir_id = req.query['fir_id'];
+    const status = req.query['status'];
+
+    const query = "UPDATE firs SET status = ? WHERE id = ?";
+
+    connection.query(query, [status, fir_id], (err, result) => {
+        if (err) res.status(500).json(responseFormatter(500, err, "Error"));
+        else res.status(200).json(responseFormatter(200, true, "Success"));
+    });
+};
+
 module.exports = {
-    insertFir, viewFirs, insertFirFile, getDropdownValues
+    insertFir, viewFirs, insertFirFile, getDropdownValues, changeFirStatus
 }
