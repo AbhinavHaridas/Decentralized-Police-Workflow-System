@@ -3,7 +3,7 @@ input[type="checkbox"] {
 }
 .wrap-collabsible {
   margin: 1.2rem 0;
-  width:100%;
+  width:85%;
 }
 .lbl-toggle {
   display: block;

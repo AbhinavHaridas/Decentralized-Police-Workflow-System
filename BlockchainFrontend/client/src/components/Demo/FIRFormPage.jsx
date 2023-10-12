@@ -56,7 +56,7 @@ function FIRFormPage() {
     console.log("IPC Section", ipcSection);
     console.log("Suspect Details", suspectDetails);
     
-      const FIRObj = {
+      const firObj = {
           date_of_offence: dateOfOffence,
           place_of_offence: placeOfOffence,
           fir_contents: firContents,
@@ -70,7 +70,7 @@ function FIRFormPage() {
 
         var requestOptions = {
           method: "POST",
-          body: JSON.stringify(FIRObj),
+          body: JSON.stringify(firObj),
           headers: {
             "Content-Type": "application/json",
           },
@@ -111,7 +111,7 @@ function FIRFormPage() {
   };
 
   return (
-    <div className="contract-container">
+    <div className={classes.contractContainer}>
       <div className={classes.container}>
         <div className={classes.form}>
           <div className="col-lg-9 my-5">
