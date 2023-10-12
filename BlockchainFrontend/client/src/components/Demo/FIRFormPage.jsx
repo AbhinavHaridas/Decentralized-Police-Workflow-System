@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import classes from "./FIRFormPage.module.css";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function FIRFormPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [dateOfOffence, setDateOfOffence] = useState("");
   const [placeOfOffence, setPlaceOfOffence] = useState("");
   const [firContents, setfirContents] = useState("");
-    const [cvFile, setCvFile] = useState(null);
-    const [zonalCode, setZonalCode] = useState(0);
-    const [crimeType, setCrimeType] = useState(0);
-    const [ipcSection, setIpcSection] = useState("");
-    const [suspectDetails, setSuspectDetails] = useState("");
+  const [cvFile, setCvFile] = useState(null);
+  const [zonalCode, setZonalCode] = useState(0);
+  const [crimeType, setCrimeType] = useState(0);
+  const [ipcSection, setIpcSection] = useState("");
+  const [suspectDetails, setSuspectDetails] = useState("");
+
+  const officerData = location?.state ? location?.state : null;
+  const officerId = officerData?.id ? officerData?.id : 1;
+  const departmentId = officerData?.department_id
+    ? officerData?.department_id
+    : 1;
+
+  console.log("Officer Data:", officerData);
 
   const handleDateOfOffenceChange = (e) => {
     setDateOfOffence(e.target.value);
@@ -21,11 +32,11 @@ function FIRFormPage() {
 
   const handlefirContentsChange = (e) => {
     setfirContents(e.target.value);
-    };
-    
-    const handleZonalCodeChange = (e) => {
-        setZonalCode(e.target.value);
-    };
+  };
+
+  const handleZonalCodeChange = (e) => {
+    setZonalCode(e.target.value);
+  };
 
   const handleCrimeTypeChange = (e) => {
     setCrimeType(e.target.value);
@@ -55,59 +66,59 @@ function FIRFormPage() {
     console.log("Crime Type", crimeType);
     console.log("IPC Section", ipcSection);
     console.log("Suspect Details", suspectDetails);
-    
-      const firObj = {
-          date_of_offence: dateOfOffence,
-          place_of_offence: placeOfOffence,
-          fir_contents: firContents,
-          zonal_code: zonalCode,
-          crime_type: crimeType,
-          ipc_section: ipcSection,
-          suspect_details: suspectDetails,
-          user_id: 3,
-          assigned_officer_id: 1
-        };
 
-        var requestOptions = {
-          method: "POST",
-          body: JSON.stringify(firObj),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          redirect: "follow",
-        };
+    const firObj = {
+      date_of_offence: dateOfOffence,
+      place_of_offence: placeOfOffence,
+      fir_contents: firContents,
+      zonal_code: zonalCode,
+      crime_type: crimeType,
+      ipc_section: ipcSection,
+      suspect_details: suspectDetails,
+      user_id: 3,
+      assigned_officer_id: officerId,
+    };
 
-        fetch(
-          "http://localhost:8000/fir/insertFir",
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then(async (result) => {
-            alert("FIR Submitted Successfully. Your FIR ID is: " + result?.data?.unique_hash);
+    var requestOptions = {
+      method: "POST",
+      body: JSON.stringify(firObj),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+    };
 
-            try {
-              // generating a formData object to store file and firId
-              const formData = new FormData();
-              formData.append('file', cvFile);
-              formData.append('fir_id', result?.data['inserted_fir_id']);
+    fetch("http://localhost:8000/fir/insertFir", requestOptions)
+      .then((response) => response.json())
+      .then(async (result) => {
+        alert(
+          "FIR Submitted Successfully. Your FIR ID is: " +
+            result?.data?.unique_hash
+        );
+        navigate("/viewfir", {
+          state: { ...officerData },
+        });
 
-              fetch('http://localhost:8000/fir/insertFirFile', {
-                method: 'POST',
-                body: formData
-              }).then((response) => response.json())
-                .then((result) => {
-                  console.log('Success:', result);
-                });
+        try {
+          // generating a formData object to store file and firId
+          const formData = new FormData();
+          formData.append("file", cvFile);
+          formData.append("fir_id", result?.data["inserted_fir_id"]);
+          formData.append("dept_id", departmentId);
 
-            } catch(e) {
-              console.error(e);
-            }
-
+          fetch("http://localhost:8000/fir/insertFirFile", {
+            method: "POST",
+            body: formData,
           })
-          .catch((error) => console.log("error", error));
-    
-    
-
+            .then((response) => response.json())
+            .then((result) => {
+              console.log("Success:", result);
+            });
+        } catch (e) {
+          console.error(e);
+        }
+      })
+      .catch((error) => console.log("error", error));
   };
 
   return (

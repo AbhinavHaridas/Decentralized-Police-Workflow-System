@@ -3,11 +3,12 @@ import { SingleFIR } from "./singleFIR.jsx";
 import { useEffect, useState } from "react";
 import "./AllFIRSPage.css";
 import DatePicker from "./DatePicker";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 function AllFIRSPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [jsonData, setJsonData] = useState(null);
   const [dropDownData, setDropDownData] = useState(null);
   const [selectedStartDate, setSelectedStartDate] = useState("");
@@ -17,12 +18,17 @@ function AllFIRSPage() {
   const [crimeType, setCrimeType] = useState("");
   const [ipcSection, setIpcSection] = useState("");
 	const [isFilterApplied, setIsFilterApplied] = useState(false);
-	const [resetDatePicker, setResetDatePicker] = useState(false);
+  const [resetDatePicker, setResetDatePicker] = useState(false);
+  
+  const officerId = location?.state?.id ? location?.state?.id : 1;
+  const departmentId = location?.state?.department_id
+    ? location?.state?.department_id
+    : 1;
 
 
       const fetchAPI = async () => {
         const firObj = {
-          officer_id: 1,
+          officer_id: officerId,
           status: status,
           start_date: selectedStartDate,
           end_date: selectedEndDate,
@@ -115,7 +121,9 @@ function AllFIRSPage() {
   
   const navigateToFileFir = (event) => {
     event.preventDefault();
-    navigate("/filefir");
+    navigate("/filefir", {
+      state: { ...location?.state },
+    });
   }
 
   const navigateToEvidenceAccess = (event) => {
@@ -125,7 +133,7 @@ function AllFIRSPage() {
 
   return (
     <div className={styles.main}>
-      <h1>FIRS for officer</h1>
+      <h1 style={{marginBottom:"2%"}}>FIRS for officer {location?.state?.full_name}</h1>
       <div className="search-filter-container">
         <div className="row" id="search">
           <div className="search-form">
