@@ -1,8 +1,16 @@
 import styles from './ViewEvidencesPage.module.css';
 import {SingleEvidence} from "./SingleEvidence.jsx";
 import {useEffect, useState} from "react";
+import { useLocation } from 'react-router-dom';
 
 function ViewEvidencesPage() {
+
+    const location = useLocation();
+
+    const firId = location.state.firId;
+
+    console.log("FIR ID:", firId);
+  
 	const [jsonData, setJsonData] = useState(null);
 	useEffect(() => {
     const fetchApi = async () => {

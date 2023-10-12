@@ -16,6 +16,9 @@ router.post("/insertFir", firController.insertFir);
 // API to view all firs of an officer
 router.post("/viewFirs", firController.viewFirs);
 
+// API to change status of an FIR
+router.get("/changeFirStatus", firController.changeFirStatus);
+
 // route to insert fir file to IPFS using pinata
 router.post('/insertFirFile', upload.single('file'), firController.insertFirFile);
 
