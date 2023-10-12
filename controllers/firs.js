@@ -147,6 +147,18 @@ const getDropdownValues = (req, res) => {
     });
 }
 
+const changeFirStatus = (req, res) => {
+    const fir_id = req.query['fir_id'];
+    const status = req.query['status'];
+
+    const query = "UPDATE firs SET status = ? WHERE id = ?";
+
+    connection.query(query, [status, fir_id], (err, result) => {
+        if (err) res.status(500).json(responseFormatter(500, err, "Error"));
+        else res.status(200).json(responseFormatter(200, true, "Success"));
+    });
+};
+
 module.exports = {
-    insertFir, viewFirs, insertFirFile, getDropdownValues
+    insertFir, viewFirs, insertFirFile, getDropdownValues, changeFirStatus
 }

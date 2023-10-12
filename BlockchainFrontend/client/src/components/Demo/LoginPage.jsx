@@ -134,7 +134,7 @@ const LoginPage = () => {
         <div className="form-container" style={{ display: "block" }}>
           <h1>Login</h1>
           <form>
-            <label for="username">Email/Phone No.</label>
+            <label htmlFor="username">Email/Phone No.</label>
             <input
               type="text"
               id="username"
@@ -143,7 +143,7 @@ const LoginPage = () => {
               onChange={handlePhoneEmailChange}
               required
             />
-            <label for="password">Password</label>
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"

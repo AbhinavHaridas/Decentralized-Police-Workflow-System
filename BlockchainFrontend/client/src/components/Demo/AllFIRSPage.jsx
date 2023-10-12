@@ -3,14 +3,16 @@ import { SingleFIR } from "./singleFIR.jsx";
 import { useEffect, useState } from "react";
 import "./AllFIRSPage.css";
 import DatePicker from "./DatePicker";
+import { useNavigate } from "react-router-dom";
+
 
 function AllFIRSPage() {
+  const navigate = useNavigate();
   const [jsonData, setJsonData] = useState(null);
   const [dropDownData, setDropDownData] = useState(null);
   const [selectedStartDate, setSelectedStartDate] = useState("");
   const [selectedEndDate, setSelectedEndDate] = useState("");
   const [status, setStatus] = useState("");
-  const [placeOfOffence, setPlaceOfOffence] = useState("");
   const [zonalCode, setZonalCode] = useState("");
   const [crimeType, setCrimeType] = useState("");
   const [ipcSection, setIpcSection] = useState("");
@@ -24,7 +26,6 @@ function AllFIRSPage() {
           status: status,
           start_date: selectedStartDate,
           end_date: selectedEndDate,
-          place_of_offence: placeOfOffence,
           zonal_code: zonalCode,
           crime_type: crimeType,
           ipc_section: ipcSection,
@@ -75,11 +76,6 @@ function AllFIRSPage() {
     setIsFilterApplied(true);
   };
 
-  const handlePlaceOfOffenceChange = (event) => {
-    setPlaceOfOffence(event.target.value);
-    setIsFilterApplied(true);
-  };
-
   const handleZonalCodeChange = (event) => {
     setZonalCode(event.target.value);
     setIsFilterApplied(true);
@@ -100,7 +96,6 @@ function AllFIRSPage() {
     setSelectedStartDate("");
     setSelectedEndDate("");
     setStatus("");
-    setPlaceOfOffence("");
     setZonalCode("");
     setCrimeType("");
     setIpcSection("");
@@ -112,6 +107,21 @@ function AllFIRSPage() {
     // Apply filters and fetch data
     fetchAPI();
   };
+
+
+   const updateJsonData = (updatedData) => {
+     setJsonData(updatedData);
+  };
+  
+  const navigateToFileFir = (event) => {
+    event.preventDefault();
+    navigate("/filefir");
+  }
+
+  const navigateToEvidenceAccess = (event) => {
+    event.preventDefault();
+    navigate("/evidenceaccess");
+  }
 
   return (
     <div className={styles.main}>
@@ -141,6 +151,22 @@ function AllFIRSPage() {
                 Reset Filter
               </button>
             </div>
+            <div className="form-group col-xs-3">
+              <button
+                onClick={navigateToFileFir}
+                className={"btn btn-block btn-primary button-active"}
+              >
+                File FIR
+              </button>
+            </div>
+            <div className="form-group col-xs-3">
+              <button
+                onClick={navigateToEvidenceAccess}
+                className={"btn btn-block btn-primary button-active"}
+              >
+                Evidence Access
+              </button>
+            </div>
           </div>
         </div>
         <div className="row" id="filter">
@@ -154,7 +180,7 @@ function AllFIRSPage() {
               >
                 <option value="">Select Status</option>
                 <option value="0">Pending</option>
-                <option value="1">Accepted</option>
+                <option value="1">Approved</option>
                 <option value="-1">Rejected</option>
               </select>
             </div>
@@ -166,11 +192,15 @@ function AllFIRSPage() {
                 value={zonalCode}
               >
                 <option value="">Select Zonal Code</option>
-                {
-                  dropDownData ? dropDownData["zones"].map((zones,key) => {
-                    return <option value={zones['zonal_code']} key={key}>{zones['zonal_name']}</option>;
-                  }): null
-                }
+                {dropDownData
+                  ? dropDownData["zones"].map((zones, key) => {
+                      return (
+                        <option value={zones["zonal_code"]} key={key}>
+                          {zones["zonal_name"]}
+                        </option>
+                      );
+                    })
+                  : null}
               </select>
             </div>
             <div className="form-group col-sm-3 col-xs-6">
@@ -205,9 +235,15 @@ function AllFIRSPage() {
                 value={ipcSection}
               >
                 <option value="">Select IPC Section</option>
-                {dropDownData ? dropDownData["ipc_sections"].map((ipcSection) => {
-                  return <option value={ipcSection} key={ipcSection}>{ipcSection}</option>;
-                }) : null}
+                {dropDownData
+                  ? dropDownData["ipc_sections"].map((ipcSection) => {
+                      return (
+                        <option value={ipcSection} key={ipcSection}>
+                          {ipcSection}
+                        </option>
+                      );
+                    })
+                  : null}
               </select>
             </div>
             <DatePicker
@@ -229,7 +265,18 @@ function AllFIRSPage() {
         //Add a key in the map function
         jsonData
           ? jsonData["data"].map((FIR, key) => {
-              return <SingleFIR key={key} props={FIR} />;
+              return (
+                <SingleFIR
+                  key={key}
+                  fir={FIR}
+                  updateData={(updatedFIR) => {
+                    // Create a copy of the current jsonData and update the relevant data
+                    const updatedData = { ...jsonData };
+                    updatedData.data[key] = updatedFIR;
+                    updateJsonData(updatedData);
+                  }}
+                />
+              );
             })
           : null
       }
