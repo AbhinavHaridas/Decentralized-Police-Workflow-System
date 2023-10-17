@@ -3,12 +3,11 @@ import "./singleFIR.css";
 import useEth from "../../contexts/EthContext/useEth";
 import { useNavigate } from "react-router-dom";
 
-function SingleFIR({ fir, updateData }) {
+function SingleFIR({ fir, department_id, updateData }) {
   const navigate = useNavigate();
   const {
     state: { contract, accounts },
   } = useEth();
-
 
   const statusObj = {
     0: "Pending",
@@ -43,16 +42,19 @@ function SingleFIR({ fir, updateData }) {
         )
         .send({ from: accounts[0] });
       alert(result?.events?.Result?.returnValues?.message);
-      if(result?.events?.Result?.returnValues?.status == "1") {
-        
-        fetch("http://localhost:8000/fir/changeFirStatus?fir_id=" + fir["id"] + "&status=1")
-          .then((response) => response.json()).then((result) => {
+      if (result?.events?.Result?.returnValues?.status == "1") {
+        fetch(
+          "http://localhost:8000/fir/changeFirStatus?fir_id=" +
+            fir["id"] +
+            "&status=1"
+        )
+          .then((response) => response.json())
+          .then((result) => {
             if (result.data) {
               fir["status"] = 1;
               updateData(fir);
             }
-          }
-        );
+          });
       }
     } catch (error) {
       console.error(error);
@@ -83,8 +85,8 @@ function SingleFIR({ fir, updateData }) {
       if (result?.events?.Result?.returnValues?.status == "1") {
         fetch(
           "http://localhost:8000/fir/changeFirStatus?fir_id=" +
-          fir["id"] +
-          "&status=-1"
+            fir["id"] +
+            "&status=-1"
         )
           .then((response) => response.json())
           .then((result) => {
@@ -94,17 +96,15 @@ function SingleFIR({ fir, updateData }) {
             }
           });
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
       throw error;
     }
   };
 
   const navigateToViewEvidence = () => {
-    navigate("/viewevidence", { state: { firId: fir["id"] } });
+    navigate("/viewevidence", { state: { fir_id: fir["id"],department_id: department_id } });
   };
-  
 
   return (
     <>

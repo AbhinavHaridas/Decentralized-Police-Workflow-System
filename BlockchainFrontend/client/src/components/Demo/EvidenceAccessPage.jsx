@@ -4,9 +4,10 @@ import { useLocation } from "react-router-dom";
 
 const EvidenceAccessPage = () => {
   const location = useLocation();
-  const departmentId = location?.state?.departmentId
-    ? location?.state?.departmentId
+  const departmentId = location?.state?.department_id
+    ? location?.state?.department_id
     : 2;
+  console.log(departmentId);
   const [jsonData, setJsonData] = useState(null);
 
   const fetchAPI = async () => {
@@ -100,7 +101,7 @@ const EvidenceAccessPage = () => {
 
   return (
     <div>
-      <h1>Evidence Access Page</h1>
+      <h1>Evidence Requests Page</h1>
       {jsonData
         ? jsonData["data"].map((request, key) => {
             return (

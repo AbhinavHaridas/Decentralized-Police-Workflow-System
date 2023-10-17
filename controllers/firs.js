@@ -116,7 +116,7 @@ const insertFirFile = async (req, res) => {
             else {
                 connection.query(
                   "INSERT INTO access (evidence_id, department_id) VALUES (?, ?)",
-                  [result.insertId, deptId], (err, result) => {
+                  [result.insertId, deptId], (err, output) => {
                     if (err) {
                         res.status(500).json(responseFormatter(500, err, "Error"));
                         return;

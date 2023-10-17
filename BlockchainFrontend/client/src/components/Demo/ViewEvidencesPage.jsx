@@ -6,13 +6,14 @@ import { useLocation } from 'react-router-dom';
 function ViewEvidencesPage() {
 
     const location = useLocation();
-    const ownerId = 4;
+    const ownerId = 3;
 
-    const firId = location?.state?.firId ? location?.state?.firId : 1;
-    const requestingId = location?.state?.departmentId ? location?.state?.departmentId : 1;
+    const firId = location?.state?.fir_id ? location?.state?.fir_id : 1;
+    const requestingId = location?.state?.department_id ? location?.state?.department_id : 1;
 
-    // console.log("FIR ID:", firId);
-  
+    console.log("FIR ID:", firId);
+  console.log("Requesting ID:", requestingId);
+
 	const [jsonData, setJsonData] = useState(null);
 	useEffect(() => {
     const fetchApi = async () => {
