@@ -113,6 +113,12 @@ function FIRFormPage() {
             .then((response) => response.json())
             .then((result) => {
               console.log("Success:", result);
+              navigate('/editaccess', {
+                state: {
+                  data: { ...officerData },
+                  evidence_id: result?.data,
+                }
+              })
             });
         } catch (e) {
           console.error(e);

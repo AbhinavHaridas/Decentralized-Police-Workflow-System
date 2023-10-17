@@ -5,7 +5,6 @@ import "./AllFIRSPage.css";
 import DatePicker from "./DatePicker";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
 function AllFIRSPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,65 +16,60 @@ function AllFIRSPage() {
   const [zonalCode, setZonalCode] = useState("");
   const [crimeType, setCrimeType] = useState("");
   const [ipcSection, setIpcSection] = useState("");
-	const [isFilterApplied, setIsFilterApplied] = useState(false);
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
   const [resetDatePicker, setResetDatePicker] = useState(false);
-  
+
   const officerId = location?.state?.id ? location?.state?.id : 1;
   const departmentId = location?.state?.department_id
     ? location?.state?.department_id
     : 1;
 
+  const fetchAPI = async () => {
+    const firObj = {
+      officer_id: officerId,
+      status: status,
+      start_date: selectedStartDate,
+      end_date: selectedEndDate,
+      zonal_code: zonalCode,
+      crime_type: crimeType,
+      ipc_section: ipcSection,
+    };
 
-      const fetchAPI = async () => {
-        const firObj = {
-          officer_id: officerId,
-          status: status,
-          start_date: selectedStartDate,
-          end_date: selectedEndDate,
-          zonal_code: zonalCode,
-          crime_type: crimeType,
-          ipc_section: ipcSection,
-        };
+    var requestOptions = {
+      method: "POST",
+      body: JSON.stringify(firObj),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+    };
 
-        var requestOptions = {
-          method: "POST",
-          body: JSON.stringify(firObj),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          redirect: "follow",
-        };
-
-        const response = await fetch(
-          "http://localhost:8000/fir/viewFirs",
-          requestOptions
-        );
-        const json = await response.json();
-        setJsonData(json);
-  };
-  
-  const getDropDownValues = async () => {
     const response = await fetch(
-      "http://localhost:8000/fir/getDropDownValues"
+      "http://localhost:8000/fir/viewFirs",
+      requestOptions
     );
+    const json = await response.json();
+    setJsonData(json);
+  };
+
+  const getDropDownValues = async () => {
+    const response = await fetch("http://localhost:8000/fir/getDropDownValues");
     const json = await response.json();
     console.log(json);
     setDropDownData(json?.data);
   };
 
-
-      useEffect(() => {
-        getDropDownValues();
-        fetchAPI();
-      }, []);
+  useEffect(() => {
+    getDropDownValues();
+    fetchAPI();
+  }, []);
 
   useEffect(() => {
-      if (resetDatePicker) {
-        fetchAPI();
-        setResetDatePicker(false); // Reset it here
-      }
+    if (resetDatePicker) {
+      fetchAPI();
+      setResetDatePicker(false); // Reset it here
+    }
   }, [resetDatePicker]);
-  
 
   const handleStatusChange = (event) => {
     setStatus(event.target.value);
@@ -105,7 +99,7 @@ function AllFIRSPage() {
     setZonalCode("");
     setCrimeType("");
     setIpcSection("");
-	  setIsFilterApplied(false);
+    setIsFilterApplied(false);
     setResetDatePicker(true);
   };
 
@@ -114,26 +108,27 @@ function AllFIRSPage() {
     fetchAPI();
   };
 
-
-   const updateJsonData = (updatedData) => {
-     setJsonData(updatedData);
+  const updateJsonData = (updatedData) => {
+    setJsonData(updatedData);
   };
-  
+
   const navigateToFileFir = (event) => {
     event.preventDefault();
     navigate("/filefir", {
       state: { ...location?.state },
     });
-  }
+  };
 
   const navigateToEvidenceAccess = (event) => {
     event.preventDefault();
-    navigate("/evidenceaccess");
-  }
+    navigate("/evidenceaccess", { state: { ...location?.state } });
+  };
 
   return (
     <div className={styles.main}>
-      <h1 style={{marginBottom:"2%"}}>FIRS for officer {location?.state?.full_name}</h1>
+      <h1 style={{ marginBottom: "2%" }}>
+        FIRS for officer {location?.state?.full_name}
+      </h1>
       <div className="search-filter-container">
         <div className="row" id="search">
           <div className="search-form">
@@ -172,7 +167,7 @@ function AllFIRSPage() {
                 onClick={navigateToEvidenceAccess}
                 className={"btn btn-block btn-primary button-active"}
               >
-                Evidence Access
+                Evidence Requests
               </button>
             </div>
           </div>
@@ -277,6 +272,7 @@ function AllFIRSPage() {
                 <SingleFIR
                   key={key}
                   fir={FIR}
+                  department_id={departmentId}
                   updateData={(updatedFIR) => {
                     // Create a copy of the current jsonData and update the relevant data
                     const updatedData = { ...jsonData };
