@@ -5,6 +5,7 @@ const connection = require("../database");
 const { responseFormatter } = require("../utils/api");
 const { generateHash } = require("../utils/hash");
 const { file2ipfs } = require("../utils/file2ipfs");
+const nodemailer = require('nodemailer');
 
 
 // ==== FUNCTIONS START HERE ==== //
@@ -174,6 +175,43 @@ const changeFirStatus = (req, res) => {
     });
 };
 
+const generateMail = (req, res) => {
+    const emailData = req.body;
+
+    const transactionID = emailData['transaction_id'];
+
+    const html = `<div><p>
+        Your FIR has been registered.  
+    </p>
+    <p>To check the status use the transaction id below</p>
+    <h3>${transactionID}</h3></div>`
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: emailData.recipient,
+        subject: emailData.subject,
+        html
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Email sending error:', error);
+            res.send(error.message);
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.send('Email sent successfully');
+        }
+    });
+}
+
 module.exports = {
-    insertFir, viewFirs, insertFirFile, getDropdownValues, changeFirStatus
+    insertFir, viewFirs, insertFirFile, getDropdownValues, changeFirStatus, generateMail
 }

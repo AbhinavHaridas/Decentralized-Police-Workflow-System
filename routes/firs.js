@@ -25,4 +25,7 @@ router.post('/insertFirFile', upload.single('file'), firController.insertFirFile
 // API to get all the dropdown values
 router.get("/getDropdownValues", firController.getDropdownValues);
 
+// Generate mail on fir addition
+router.post('/generateEmail', firController.generateMail);
+
 module.exports = router;
