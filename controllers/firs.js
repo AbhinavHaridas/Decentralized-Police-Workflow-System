@@ -1,11 +1,11 @@
 // Import Modules
 const connection = require("../database");
+const nodemailer = require('nodemailer');
 
 // Import Utils
 const { responseFormatter } = require("../utils/api");
 const { generateHash } = require("../utils/hash");
 const { file2ipfs } = require("../utils/file2ipfs");
-const nodemailer = require('nodemailer');
 
 
 // ==== FUNCTIONS START HERE ==== //
@@ -42,10 +42,16 @@ const insertFir = (req, res) => {
 
 // Function to view all firs of an officer
 const viewFirs = (req, res) => {
-    const { officer_id, status, start_date, end_date, place_of_offence, zonal_code, crime_type, ipc_section } = req.body;
+    const { status, start_date, end_date, place_of_offence, zonal_code, crime_type, ipc_section, transaction_id } = req.body;
 
-    let query = "SELECT * FROM firs WHERE assigned_officer_id = ?";
-    const queryParams = [officer_id];
+    let query = "SELECT * FROM firs WHERE zonal_code = ?";
+    const queryParams = [zonal_code];
+
+    // Check if transaction_id is provided
+    if (transaction_id) {
+        query += " AND transaction_id = ?";
+        queryParams.push(transaction_id);
+    }
 
     // Check if status is provided
     if (status) {
@@ -71,11 +77,6 @@ const viewFirs = (req, res) => {
         queryParams.push(place_of_offence);
     }
 
-    // // Check if zonal_code is provided
-    if (zonal_code) {
-        query += " AND zonal_code = ?"; 
-        queryParams.push(zonal_code);
-    }
 
     // // Check if crime_type is provided
     if (crime_type) {
@@ -198,16 +199,16 @@ const generateMail = (req, res) => {
         from: process.env.EMAIL_USER,
         to: emailData.recipient,
         subject: emailData.subject,
-        html
+        html:html,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.error('Email sending error:', error);
-            res.send(error.message);
+            res.status(500).json(responseFormatter(500, false, error.message));
         } else {
             console.log('Email sent: ' + info.response);
-            res.send('Email sent successfully');
+            res.status(200).json(responseFormatter(200, true, "Success"));
         }
     });
 }

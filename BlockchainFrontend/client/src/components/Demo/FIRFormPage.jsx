@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import classes from "./FIRFormPage.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import useEth from "../../contexts/EthContext/useEth";
+
 
 function FIRFormPage() {
+    const {
+      state: { contract, accounts },
+    } = useEth();
   const location = useLocation();
   const navigate = useNavigate();
   const [dateOfOffence, setDateOfOffence] = useState("");
   const [placeOfOffence, setPlaceOfOffence] = useState("");
   const [firContents, setfirContents] = useState("");
   const [cvFile, setCvFile] = useState(null);
-  const [zonalCode, setZonalCode] = useState(0);
+  const [userEmail, setuserEmail] = useState("");
   const [crimeType, setCrimeType] = useState(0);
   const [ipcSection, setIpcSection] = useState("");
   const [suspectDetails, setSuspectDetails] = useState("");
@@ -34,8 +39,8 @@ function FIRFormPage() {
     setfirContents(e.target.value);
   };
 
-  const handleZonalCodeChange = (e) => {
-    setZonalCode(e.target.value);
+  const handleuserEmailChange = (e) => {
+    setuserEmail(e.target.value);
   };
 
   const handleCrimeTypeChange = (e) => {
@@ -62,7 +67,7 @@ function FIRFormPage() {
     console.log("Place Of offence:", placeOfOffence);
     console.log("FIR Contents:", firContents);
     console.log("CV File:", cvFile);
-    console.log("Zonal Code:", zonalCode);
+    console.log("User Email:", userEmail);
     console.log("Crime Type", crimeType);
     console.log("IPC Section", ipcSection);
     console.log("Suspect Details", suspectDetails);
@@ -71,7 +76,7 @@ function FIRFormPage() {
       date_of_offence: dateOfOffence,
       place_of_offence: placeOfOffence,
       fir_contents: firContents,
-      zonal_code: zonalCode,
+      zonal_code: officerData?.zonal_code ? officerData?.zonal_code : 9,
       crime_type: crimeType,
       ipc_section: ipcSection,
       suspect_details: suspectDetails,
@@ -88,41 +93,78 @@ function FIRFormPage() {
       redirect: "follow",
     };
 
+
+
     fetch("http://localhost:8000/fir/insertFir", requestOptions)
       .then((response) => response.json())
       .then(async (result) => {
-        alert(
-          "FIR Submitted Successfully. Your FIR ID is: " +
-            result?.data?.unique_hash
-        );
-        navigate("/viewfir", {
-          state: { ...officerData },
-        });
+        // alert(
+        //   "FIR Submitted Successfully. Your FIR ID is: " +
+        //     result?.data?.unique_hash
+        // );
+
+        const blockChainResult = await contract.methods
+          .createFIR(
+            result?.data?.["inserted_fir_id"],
+            officerId,
+            result?.data?.unique_hash,
+            crimeType
+          )
+          .send({ from: accounts[0] });
+        console.log(result);
+        alert(blockChainResult?.events?.Result?.returnValues?.message + " Please check your email for an ID to track your FIR Status");
+        
+        const emailObj = {
+          recipient: userEmail,
+          subject: "FIR Logged",
+          transaction_id: result?.data?.unique_hash,
+        }
+
+        var requestOptions = {
+          method: "POST",
+          body: JSON.stringify(emailObj),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          redirect: "follow",
+        };
+
 
         try {
-          // generating a formData object to store file and firId
-          const formData = new FormData();
-          formData.append("file", cvFile);
-          formData.append("fir_id", result?.data["inserted_fir_id"]);
-          formData.append("dept_id", departmentId);
-
-          fetch("http://localhost:8000/fir/insertFirFile", {
-            method: "POST",
-            body: formData,
-          })
-            .then((response) => response.json())
-            .then((result) => {
-              console.log("Success:", result);
-              navigate('/editaccess', {
-                state: {
-                  data: { ...officerData },
-                  evidence_id: result?.data,
-                }
+          fetch("http://localhost:8000/fir/generateEmail", requestOptions).then((response) => response.json())
+          .then((emailResult) => {
+            console.log("Success:", emailResult);
+            try {
+              // Generating a formData object to store file and firId
+              const formData = new FormData();
+              formData.append("file", cvFile);
+              formData.append("fir_id", result?.data["inserted_fir_id"]);
+              formData.append("dept_id", departmentId);
+    
+              fetch("http://localhost:8000/fir/insertFirFile", {
+                method: "POST",
+                body: formData,
               })
-            });
-        } catch (e) {
-          console.error(e);
+                .then((response) => response.json())
+                .then((result) => {
+                  console.log("Success:", result);
+                  navigate('/editaccess', {
+                    state: {
+                      data: { ...officerData },
+                      evidence_id: result?.data,
+                    }
+                  })
+                });
+            } catch (e) {
+              console.error(e);
+            }
+          });
         }
+        catch (error) {
+          console.error(error);
+          throw error;
+        }
+
       })
       .catch((error) => console.log("error", error));
   };
@@ -156,13 +198,13 @@ function FIRFormPage() {
                 />
               </div>
               <div className={classes.formvaluecontainer}>
-                <label className={classes.label}>Zonal Code</label>
+                <label className={classes.label}>User Email</label>
                 <input
-                  type="number"
+                  type="text"
                   className={classes.zonalcode}
                   id="zonalcode"
-                  value={zonalCode}
-                  onChange={handleZonalCodeChange}
+                  value={userEmail}
+                  onChange={handleuserEmailChange}
                 />
               </div>
               <div className={classes.formvaluecontainer}>

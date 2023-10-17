@@ -34,12 +34,7 @@ function SingleFIR({ fir, department_id, updateData }) {
       };
 
       const result = await contract.methods
-        .acceptFIR(
-          userFIR.id,
-          userFIR.assignedOfficerId,
-          userFIR.transactionId,
-          userFIR.crimeType
-        )
+        .acceptFIR(userFIR.transactionId)
         .send({ from: accounts[0] });
       alert(result?.events?.Result?.returnValues?.message);
       if (result?.events?.Result?.returnValues?.status == "1") {
@@ -73,12 +68,7 @@ function SingleFIR({ fir, department_id, updateData }) {
       };
 
       const result = await contract.methods
-        .rejectFIR(
-          userFIR.id,
-          userFIR.assignedOfficerId,
-          userFIR.transactionId,
-          userFIR.crimeType
-        )
+        .rejectFIR(userFIR.transactionId)
         .send({ from: accounts[0] });
       console.log(result);
       alert(result?.events?.Result?.returnValues?.message);

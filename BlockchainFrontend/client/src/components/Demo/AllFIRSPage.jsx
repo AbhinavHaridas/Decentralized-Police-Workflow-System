@@ -18,19 +18,21 @@ function AllFIRSPage() {
   const [ipcSection, setIpcSection] = useState("");
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   const [resetDatePicker, setResetDatePicker] = useState(false);
+  const [firTransactionId, setFirTransactionId] = useState("");
 
   const officerId = location?.state?.id ? location?.state?.id : 1;
-  const departmentId = location?.state?.department_id
-    ? location?.state?.department_id
-    : 1;
+  const officerData = location?.state ? location?.state : null;
+  const departmentId = location?.state?.department_id ? location?.state?.department_id : 1;
+  console.log("Officer Data:", officerData);
 
   const fetchAPI = async () => {
+    console.log(firTransactionId);
     const firObj = {
-      officer_id: officerId,
+      transaction_id: firTransactionId,
       status: status,
       start_date: selectedStartDate,
       end_date: selectedEndDate,
-      zonal_code: zonalCode,
+      zonal_code: location?.state?.zonal_code ? location?.state?.zonal_code : 9,
       crime_type: crimeType,
       ipc_section: ipcSection,
     };
@@ -91,6 +93,11 @@ function AllFIRSPage() {
     setIsFilterApplied(true);
   };
 
+  const handleFirTransactionIdChange = (event) => {
+    setFirTransactionId(event.target.value);
+    setIsFilterApplied(true);
+  };
+
   const handleResetFilters = () => {
     // Reset all filter values and set isFilterApplied to false
     setSelectedStartDate("");
@@ -99,6 +106,7 @@ function AllFIRSPage() {
     setZonalCode("");
     setCrimeType("");
     setIpcSection("");
+    setFirTransactionId("");
     setIsFilterApplied(false);
     setResetDatePicker(true);
   };
@@ -187,7 +195,7 @@ function AllFIRSPage() {
                 <option value="-1">Rejected</option>
               </select>
             </div>
-            <div className="form-group col-sm-3 col-xs-6">
+            {/* <div className="form-group col-sm-3 col-xs-6">
               <select
                 data-filter="type"
                 className="filter-type filter form-control"
@@ -205,7 +213,7 @@ function AllFIRSPage() {
                     })
                   : null}
               </select>
-            </div>
+            </div> */}
             <div className="form-group col-sm-3 col-xs-6">
               <select
                 data-filter="price"
@@ -248,6 +256,14 @@ function AllFIRSPage() {
                     })
                   : null}
               </select>
+            </div>
+            <div className="form-group col-sm-3 col-xs-6">
+              <input
+                className={styles.transactionInput}
+                placeholder="Enter Transaction Id"
+                value={firTransactionId}
+                onChange={handleFirTransactionIdChange}
+              />
             </div>
             <DatePicker
               placeholder="Enter Start date"

@@ -12,7 +12,6 @@ contract FIRSystem{
         string transactionId;
         int status;
         uint crimeType;
-        // string ipcSection;
         // string[] evidenceHashes; // Contains pinata ids of evidences
     }
 
@@ -28,17 +27,7 @@ contract FIRSystem{
         string message
     );
 
-
-    // function acceptFIR(FIR memory userFIR) public returns (Result memory){
-    //     // Check to see if an FIR has already been accepted or rejected
-    //     require(FIRList[userFIR.transactionId].id == 0 , "Following FIR has already been accepted or rejected");
-    //     userFIR.status = 1;
-    //     FIRList[userFIR.transactionId] = userFIR;
-
-    //     return Result(1,"FIR Has been Accepted");
-    // }
-
-    function acceptFIR(uint _id, uint _assignedOfficerId, string memory _transactionId, uint _crimeType) public {
+    function createFIR(uint _id, uint _assignedOfficerId, string memory _transactionId, uint _crimeType) public {
     // Check to see if an FIR has already been accepted or rejected
     if(FIRList[_transactionId].id != 0){
         emit Result(0,"Following FIR has already been accepted or rejected");
@@ -48,36 +37,68 @@ contract FIRSystem{
     userFIR.id = _id;
     userFIR.assignedOfficerId = _assignedOfficerId;
     userFIR.transactionId = _transactionId;
-    userFIR.status = 1;
+    userFIR.status = 0;
     userFIR.crimeType = _crimeType;
     FIRList[userFIR.transactionId] = userFIR;
-    emit Result(1,"FIR Has been Accepted");
+    emit Result(1,"FIR Has been created");
     }
     }
 
-
-    // function rejectFIR(FIR memory userFIR) public {
-        
-    //     userFIR.status = -1;
-    //     FIRList[userFIR.transactionId] = userFIR;
-
+    // function acceptFIR(uint _id, uint _assignedOfficerId, string memory _transactionId, uint _crimeType) public {
+    // // Check to see if an FIR has already been accepted or rejected
+    // if(FIRList[_transactionId].id != 0){
+    //     emit Result(0,"Following FIR has already been accepted or rejected");
+    // }
+    // else{
+    // FIR memory userFIR;
+    // userFIR.id = _id;
+    // userFIR.assignedOfficerId = _assignedOfficerId;
+    // userFIR.transactionId = _transactionId;
+    // userFIR.status = 1;
+    // userFIR.crimeType = _crimeType;
+    // FIRList[userFIR.transactionId] = userFIR;
+    // emit Result(1,"FIR Has been Accepted");
+    // }
     // }
 
-    function rejectFIR(uint _id, uint _assignedOfficerId, string memory _transactionId, uint _crimeType) public {
-    // Check to see if an FIR has already been accepted or rejected
-    if(FIRList[_transactionId].id != 0){
-        revert("Following FIR has already been accepted or rejected");
+
+    function acceptFIR(string memory _transactionId) public {
+        // Check to see if an FIR with the given transactionId exists
+        require(FIRList[_transactionId].id != 0, "FIR not found");
+
+        // Update the status of the existing FIR
+        FIRList[_transactionId].status = 1;
+
+        emit Result(1, "FIR Has been Accepted");
     }
-    else{
-    FIR memory userFIR;
-    userFIR.id = _id;
-    userFIR.assignedOfficerId = _assignedOfficerId;
-    userFIR.transactionId = _transactionId;
-    userFIR.status = -1;
-    userFIR.crimeType = _crimeType;
-    FIRList[userFIR.transactionId] = userFIR;
-    emit Result(1,"FIR Has been rejected");
+
+
+    // function rejectFIR(uint _id, uint _assignedOfficerId, string memory _transactionId, uint _crimeType) public {
+    // // Check to see if an FIR has already been accepted or rejected
+    // if(FIRList[_transactionId].id != 0){
+    //     revert("Following FIR has already been accepted or rejected");
+    // }
+    // else{
+    // FIR memory userFIR;
+    // userFIR.id = _id;
+    // userFIR.assignedOfficerId = _assignedOfficerId;
+    // userFIR.transactionId = _transactionId;
+    // userFIR.status = -1;
+    // userFIR.crimeType = _crimeType;
+    // FIRList[userFIR.transactionId] = userFIR;
+    // emit Result(1,"FIR Has been rejected");
+    // }
+    // }
+
+    function rejectFIR(string memory _transactionId) public {
+    // Check to see if an FIR with the given transactionId exists
+    require(FIRList[_transactionId].id != 0, "FIR not found");
+
+    // Update the status of the existing FIR to mark it as rejected (status = -1)
+    FIRList[_transactionId].status = -1;
+
+    emit Result(1, "FIR Has been Rejected");
     }
-    }
+
 
 }

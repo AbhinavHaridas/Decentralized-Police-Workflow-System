@@ -11,7 +11,7 @@ function EditAccessEvidencePage() {
   const departmentId = officerData?.department_id
     ? officerData?.department_id
     : 1;
-  const [dept, setDept] = useState([departmentId]);
+  const [dept, setDept] = useState(null);
 
   console.log("Officer Data:", officerData);
   console.log("Evidence ID:", evidenceId);
@@ -49,11 +49,11 @@ function EditAccessEvidencePage() {
     if (!dept && !evidenceId) alert("Please enter departments or evidence");
 
     try {
-      fetch("http://localhost:8000/evidence/sendAccess", {
+      fetch("http://localhost:8000/evidence/addEvidenceAccess", {
         method: "POST",
         body: JSON.stringify({
           evidence_id: evidenceId,
-          dept_id: dept,
+          department_ids: dept,
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -64,9 +64,7 @@ function EditAccessEvidencePage() {
           if (result.data) {
             alert("Access send successfully");
             navigate("/viewfir", {
-              state: {
-                data: { ...officerData },
-              },
+              state: { ...officerData },
             });
           } else {
             alert("Access not send Try again");
