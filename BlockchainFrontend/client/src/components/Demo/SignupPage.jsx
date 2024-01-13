@@ -107,7 +107,7 @@ function SignupPage() {
 }
 
 :root {
-    --main-color: #3a0ca3;
+    --main-color: #1A56DB;
     --background-color: aliceblue;
 }
 
@@ -130,8 +130,7 @@ body {
     border-radius: 10px;
     box-shadow: 3px 3px 11px 1.5px #0000002b;
     padding: 10px;
-    height: 630px;
-
+    height: 665px;
     display: grid;
     grid-template-columns: 50% 50%;
 }
@@ -147,7 +146,9 @@ h1 {
     overflow: hidden;
     border-radius: 10px;
   background:url(https://wallpapercg.com/media/ts_sq/7898.webp);
-  background-size:100% 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 98%;
 }
 
 
@@ -155,7 +156,8 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding-bottom: 10px;
+    padding-left:5px;
 }
 
 .Name,
@@ -191,13 +193,6 @@ form select {
     outline: none;
     color: var(--main-color);
     margin-bottom: 10px;
-}
-
-form input:focus,
-form select:focus,
-form input:hover,
-form select:hover {
-    border: 1px solid var(--main-color);
 }
 
 form .Phone {
@@ -289,6 +284,7 @@ form button {
     border: none;
     cursor: pointer;
     margin: auto;
+    margin-bottom: 7px;
 }
 
 @media (max-width:800px) {

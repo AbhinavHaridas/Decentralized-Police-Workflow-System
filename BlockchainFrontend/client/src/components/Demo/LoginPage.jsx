@@ -87,7 +87,8 @@ const LoginPage = () => {
             text-align: center;
             margin-bottom: 30px;
             font-size: 36px;
-            color: #b38bff;
+            color: #1A56DB;
+            font-weight:bold;
           }
           form {
             display: flex;
@@ -108,7 +109,7 @@ const LoginPage = () => {
           }
           button {
             padding: 10px;
-            background-color: #b38bff;
+            background-color: #1A56DB;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -117,11 +118,12 @@ const LoginPage = () => {
             transition: background-color 0.2s ease-in-out;
           }
           button:hover {
-            background-color: #8c5fb2;
+            background-color: #1A56DB;
+            border: 1px solid #1A56DB;
           }
           a {
             text-decoration: none;
-            color: #b38bff;
+            color: #1A56DB;
             font-size: 18px;
             cursor:pointer;
           }
@@ -134,8 +136,7 @@ const LoginPage = () => {
 
           .viewfir{
             position:absolute;
-            right:0px;
-            bottom:0px;
+            right:0;
             font-size:14px;
           }
         `}
@@ -163,7 +164,7 @@ const LoginPage = () => {
               onChange={handlePasswordChange}
               required
             />
-            <button onClick={handleLogin}>Login</button>
+            <button className="bg-blue-700 hover:bg-white hover:text-blue-700 border border-blue-700 " onClick={handleLogin}>Login</button>
           </form>
           <p>
             Don't have an account?{" "}

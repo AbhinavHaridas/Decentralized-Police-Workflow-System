@@ -103,13 +103,13 @@ function SingleFIR({ fir, department_id, updateData }) {
         <label htmlFor={fir["id"]} className="lbl-toggle">
           <div className="fir-wrap-header">
             <p>
-              <b>id</b>: {fir["id"]}
+              <b>ID</b>: {fir["id"]}
             </p>
             <p>
               <b>Date</b>: {formatDate(fir["date_of_offence"])}
             </p>
             <p>
-              <b>status</b>: {statusObj[fir["status"]]}
+              <b>Status</b>: {statusObj[fir["status"]]}
             </p>
           </div>
         </label>
@@ -117,19 +117,19 @@ function SingleFIR({ fir, department_id, updateData }) {
           <div className="content-inner">
             <div className={styles.main}>
               <p>
-                <b>place_of_offence</b>: {fir["place_of_offence"]}
+                <b>Place of Offence</b>: {fir["place_of_offence"]}
               </p>
               <p>
-                <b>crime_type</b>: {fir["crime_type"]}
+                <b>Crime Type</b>: {fir["crime_type"]}
               </p>
               <p>
-                <b>ipc_section</b>: {fir["ipc_section"]}
+                <b>IPC Section</b>: {fir["ipc_section"]}
               </p>
               <p>
-                <b>suspect_details</b>: {fir["suspect_details"]}
+                <b>Suspect Details</b>: {fir["suspect_details"]}
               </p>
               <p>
-                <b>fir_contents</b>: {fir["fir_contents"]}
+                <b>FIR Contents</b>: {fir["fir_contents"]}
               </p>
               <div className="fir-btns-container">
                 {fir["status"] == 0 ? (

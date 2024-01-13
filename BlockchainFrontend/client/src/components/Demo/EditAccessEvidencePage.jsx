@@ -76,91 +76,148 @@ function EditAccessEvidencePage() {
   };
 
   return (
-    <>
-      <style>
-        {`
-			.main {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 30em;
-		}
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 pb-8 pt-8">
+      {/* Scrollable container for the form */}
+      <div className="bg-white shadow-md rounded-md p-8 max-w-xl w-full overflow-y-auto ">
+        <h1 className="pt-0 text-3xl font-bold mb-4 text-blue-700 text-center">
+          Share Evidence
+        </h1>
+        <div className="checkBoxes">
+                    {Object.keys(departments).map((department, index) => {
+                        // Check if the departmentId is not the one to be excluded
+                        if (departmentId !== parseInt(department)) {
+                            return (
+                                <div key={index} className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700"
+                                >
+                                    <input className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'type="checkbox"
+                                        // onChange={(e) => handleCheck(e, parseInt(department))}
+                                    />
+                                    <h3>{departments[parseInt(department)]}</h3>
+                                </div>
+                            );
+                        }
+                        // Return null if the departmentId is the one to be excluded
+                        return null;
+                    })}
+                </div>
 
-		.container {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: space-around;
-			height:25em;
-			width: 50rem;
-			background-color: #f3f4f6;
-			border-radius: 2rem;
-			box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-		}
+        <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700 ">
+          <input
+            id="bordered-checkbox-1"
+            type="checkbox"
+            value=""
+            name="bordered-checkbox"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label
+            for="bordered-checkbox-1"
+            class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >
+            Default radio
+          </label>
+        </div>
 
-		h1, h3, .submit {
-			font-family: 'Poppins', sans-serif;
-		}
-
-		h1 {
-			font-size: 50px;
-		}
-
-
-		.checkBoxes {
-			width: 25rem;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-around;
-		}
-
-		.checkBoxes input[type="checkbox"]{
-			display:block;
-		}
-
-		.submit {
-			margin: 1rem;
-			width: 10rem;
-			height: 2rem;
-		}
-
-		.checkbox-container{
-			display: flex;
-    		align-items: center;
-    		gap: 15px;
-		}
-`}
-      </style>
-      <div className="main">
-        <div className="container">
-          <h1>Share Evidence</h1>
-          <div className="checkBoxes">
-            {Object.keys(departments).map((department, index) => {
-              // Check if the departmentId is not the one to be excluded
-              if (departmentId !== parseInt(department)) {
-                return (
-                  <div key={index} className="checkbox-container">
-                    <input
-                      type="checkbox"
-                      onChange={(e) => handleCheck(e, parseInt(department))}
-                    />
-                    <h3>{departments[parseInt(department)]}</h3>
-                  </div>
-                );
-              }
-              // Return null if the departmentId is the one to be excluded
-              return null;
-            })}
-          </div>
-
-          <div className="button-1" onClick={sendAccess}>
-            <div className="eff-1"></div>
-            <span>Share Evidence</span>
-          </div>
+        <div
+          className="pt-4 flex items-center justify-center button-1"
+          // onClick={sendAccess}
+        >
+          <button
+            type="submit"
+            class="text-white  bg-blue-700 hover:bg-white hover:text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 "
+          >
+            Send Access
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
+
+//   return (
+//     <>
+//       <style>
+//         {`
+// 			.main {
+// 			display: flex;
+// 			justify-content: center;
+// 			align-items: center;
+// 			height: 30em;
+// 		}
+
+// 		.container {
+// 			display: flex;
+// 			flex-direction: column;
+// 			align-items: center;
+// 			justify-content: space-around;
+// 			height:25em;
+// 			width: 50rem;
+// 			background-color: #f3f4f6;
+// 			border-radius: 2rem;
+// 			box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+// 		}
+
+// 		h1, h3, .submit {
+// 			font-family: 'Poppins', sans-serif;
+// 		}
+
+// 		h1 {
+// 			font-size: 50px;
+// 		}
+
+
+// 		.checkBoxes {
+// 			width: 25rem;
+// 			display: flex;
+// 			flex-direction: column;
+// 			justify-content: space-around;
+// 		}
+
+// 		.checkBoxes input[type="checkbox"]{
+// 			display:block;
+// 		}
+
+// 		.submit {
+// 			margin: 1rem;
+// 			width: 10rem;
+// 			height: 2rem;
+// 		}
+
+// 		.checkbox-container{
+// 			display: flex;
+//     		align-items: center;
+//     		gap: 15px;
+// 		}
+// `}
+//       </style>
+//       <div className="main">
+//         <div className="container">
+//           <h1>Share Evidence</h1>
+//           <div className="checkBoxes">
+//             {Object.keys(departments).map((department, index) => {
+//               // Check if the departmentId is not the one to be excluded
+//               if (departmentId !== parseInt(department)) {
+//                 return (
+//                   <div key={index} className="checkbox-container">
+//                     <input
+//                       type="checkbox"
+//                       onChange={(e) => handleCheck(e, parseInt(department))}
+//                     />
+//                     <h3>{departments[parseInt(department)]}</h3>
+//                   </div>
+//                 );
+//               }
+//               // Return null if the departmentId is the one to be excluded
+//               return null;
+//             })}
+//           </div>
+
+//           <div className="button-1" onClick={sendAccess}>
+//             <div className="eff-1"></div>
+//             <span>Share Evidence</span>
+//           </div>
+//         </div>
+//       </div>
+//     </>
+//   );
 }
 
 export default EditAccessEvidencePage;

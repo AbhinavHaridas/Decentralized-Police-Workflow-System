@@ -3,19 +3,20 @@ input[type="checkbox"] {
 }
 .wrap-collabsible {
   margin: 1.2rem 0;
-  width:85%;
+  width:50%;
 }
 .lbl-toggle {
   display: block;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1rem;
   text-align: center;
   padding: 1rem;
   color: #fff;
-  background: #0069ff;
+  background: #3F83F8;
   cursor: pointer;
   border-radius: 7px;
   transition: all 0.25s ease-out;
+  font-weight: normal;
 }
 .lbl-toggle:hover {
   color: #fff;
