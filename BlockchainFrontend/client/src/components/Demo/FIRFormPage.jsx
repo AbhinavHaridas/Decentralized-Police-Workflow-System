@@ -20,6 +20,7 @@ function FIRFormPage() {
   const [suspectDetails, setSuspectDetails] = useState("");
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   const [resetDatePicker, setResetDatePicker] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const officerData = location?.state ? location?.state : null;
   const officerId = officerData?.id ? officerData?.id : 1;
@@ -61,6 +62,7 @@ function FIRFormPage() {
   };
 
   const handleSubmit = (e) => {
+    setIsLoading(true);
     e.preventDefault();
     // PerhtmlForm submission logic here
     console.log("Date of ofeence:", dateOfOffence);
@@ -148,6 +150,7 @@ function FIRFormPage() {
                 })
                   .then((response) => response.json())
                   .then((result) => {
+                    setIsLoading(false);
                     console.log("Success:", result);
                     navigate("/editaccess", {
                       state: {
@@ -170,7 +173,44 @@ function FIRFormPage() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 pb-8 pt-8">
+      <style>
+        {`.loader div {
+  animation-duration: 0.5s;
+}
+
+.loader div:first-child {
+  animation-delay: 0.7s;
+}
+
+.loader div:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.loader div:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.loader-box {
+  right: 46vw;
+  top: 46vh;
+}
+
+.loader-container {
+  height: 100vw;
+}
+
+`}
+      </style>
+      <div class="min-h-screen flex justify-center items-center bg-gray-100 pb-8 pt-6 ">
+        {isLoading &&
+          <div className="bg-white bg-opacity-60 min-h-screen w-screen fixed loader-container">
+            <div class="loader bg-white bg-opacity-40 p-5 rounded-full flex space-x-3 fixed loader-box">
+              <div class="w-5 h-5 bg-blue-700 rounded-full animate-bounce"></div>
+              <div class="w-5 h-5 bg-blue-700 rounded-full animate-bounce"></div>
+              <div class="w-5 h-5 bg-blue-700 rounded-full animate-bounce"></div>
+            </div>
+          </div>
+        }
         {/* Scrollable container for the form */}
         <div className="bg-white shadow-md rounded-md p-8 max-w-xl w-full overflow-y-auto ">
           <h1 className="pt-6 text-2xl font-bold mb-4 text-blue-700 text-center">
@@ -210,19 +250,6 @@ function FIRFormPage() {
                 onChange={handlePlaceOfOffenceChange}
               />
             </div>
-            {/* <div className="mb-5">
-              <label
-                for="zonalcode"
-                className="block mb-2 text-sm font-medium text-blue-700 dark:text-white"
-              >
-                Zonal Code
-              </label>
-              <input
-                type="integer"
-                className="shadow-sm bg-gray-50 border border-blue-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                required
-              />
-            </div> */}
             <div className="mb-5">
               <label
                 for="useremail"
@@ -246,9 +273,9 @@ function FIRFormPage() {
               <select
                 id="crimetype"
                 className="bg-gray-50 border border-blue-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  // className={classNamees.crimetypedropdown}
-                  value={crimeType}
-                  onChange={handleCrimeTypeChange}
+                // className={classNamees.crimetypedropdown}
+                value={crimeType}
+                onChange={handleCrimeTypeChange}
               >
                 <option value="">Select Crime Type</option>
                 <option value="1">Murder</option>
@@ -279,8 +306,8 @@ function FIRFormPage() {
                 type="text"
                 //   className={classNamees.zonalcode}
                 id="ipcsection"
-                  value={ipcSection}
-                  onChange={handleIpcSectionChange}
+                value={ipcSection}
+                onChange={handleIpcSectionChange}
               />
             </div>
             <div className="mb-5">
@@ -293,8 +320,8 @@ function FIRFormPage() {
                 placeholder=""
                 /* className={classNamees.textarea} */
                 id="firContents"
-                        value={firContents}
-                        onChange={handlefirContentsChange}
+                value={firContents}
+                onChange={handlefirContentsChange}
               />
             </div>
 
@@ -308,8 +335,8 @@ function FIRFormPage() {
                 placeholder=""
                 id="suspectdetails"
                 //   rows={2}
-                  value={suspectDetails}
-                  onChange={handleSuspectDetailsChange}
+                value={suspectDetails}
+                onChange={handleSuspectDetailsChange}
               />
             </div>
             <div className="mb-5">
@@ -337,16 +364,7 @@ function FIRFormPage() {
               >
                 *Upload your Evidence here. Max file size 50 MB
               </div>
-              {/* //   className={classNamees.chooseFilebtn} */}
-              {/* id="cvFile" */}
-              {/* /> */}
             </div>
-            {/* { */}
-            {/* !cvFile &&  */}
-            {/* ( */}
-
-            {/* ) */}
-            {/* } */}
             <button
               type="submit"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -359,124 +377,6 @@ function FIRFormPage() {
       </div>
     </>
   );
-  // return (
-  //   <div className={className.contractContainer}>
-  //     <div className={className.container}>
-  //       <div className={className.htmlForm}>
-  //         <div className="col-lg-9 my-5">
-  //           <h1 className={className.header}>File FIR</h1>
-
-  //           <htmlForm onSubmit={handleSubmit}>
-  //             <div className={className.htmlFormvaluecontainer}>
-  //               <label className={className.label}>Date of offence</label>
-  //               <input
-  //                 type="date"
-  //                 className={className.datepicker}
-  //                 id="fullName"
-  //                 value={dateOfOffence}
-  //                 onChange={handleDateOfOffenceChange}
-  //               />
-  //             </div>
-  //             <div className={className.htmlFormvaluecontainer}>
-  //               <label className={className.label}>Place Of Offence</label>
-  //               <input
-  //                 type="text"
-  //                 className={className.placeofoffence}
-  //                 id="placeofoffence"
-  //                 value={placeOfOffence}
-  //                 onChange={handlePlaceOfOffenceChange}
-  //               />
-  //             </div>
-  //             <div className={className.htmlFormvaluecontainer}>
-  //               <label className={className.label}>User Email</label>
-  //               <input
-  //                 type="text"
-  //                 className={className.zonalcode}
-  //                 id="zonalcode"
-  //                 value={userEmail}
-  //                 onChange={handleuserEmailChange}
-  //               />
-  //             </div>
-  //             <div className={className.htmlFormvaluecontainer}>
-  //               <label className={className.label}>Crime Type</label>
-  //               <select
-  //                 className={className.crimetypedropdown}
-  //                 id="crimetype"
-  //                 value={crimeType}
-  //                 onChange={handleCrimeTypeChange}
-  //               >
-  //                 <option value="">Select Crime Type</option>
-  //                 <option value="1">Murder</option>
-  //                 <option value="2">Attempt to commit murder</option>
-  //                 <option value="3">Dacoity</option>
-  //                 <option value="4">Robbery (Excluding Chain Snatching)</option>
-  //                 <option value="5">Robbery- Chain Snatching</option>
-  //                 <option value="6">Extortion</option>
-  //                 <option value="7">House Break in, Burglary, Theft</option>
-  //                 <option value="8">Thefts</option>
-  //                 <option value="9">Motor Vehicle Thefts</option>
-  //                 <option value="10">Hurt</option>
-  //                 <option value="11">Riots</option>
-  //                 <option value="12">Rape</option>
-  //                 <option value="13">Molestation</option>
-  //                 <option value="14">Other</option>
-  //               </select>
-  //             </div>
-  //             <div className={className.htmlFormvaluecontainer}>
-  //               <label className={className.label}>IPC Section</label>
-  //               <input
-  //                 type="text"
-  //                 className={className.zonalcode}
-  //                 id="ipcsection"
-  //                 value={ipcSection}
-  //                 onChange={handleIpcSectionChange}
-  //               />
-  //             </div>
-  //             <div className={className.htmlFormvaluecontainer}>
-  //               <label className={className.label}>FIR Contents</label>
-  //               <textarea
-  //                 className={className.textarea}
-  //                 id="firContents"
-  //                 rows={2}
-  //                 value={firContents}
-  //                 onChange={handlefirContentsChange}
-  //               />
-  //             </div>
-  //             <div className={className.htmlFormvaluecontainer}>
-  //               <label className={className.label}>Suspect Details</label>
-  //               <textarea
-  //                 className={className.textarea}
-  //                 id="suspectdetails"
-  //                 rows={2}
-  //                 value={suspectDetails}
-  //                 onChange={handleSuspectDetailsChange}
-  //               />
-  //             </div>
-  //             <div className={className.htmlFormvaluecontainer}>
-  //               <label htmlhtmlFor="cvFile" className={className.label}>
-  //                 Upload Evidence
-  //               </label>
-  //               <input
-  //                 type="file"
-  //                 className={className.chooseFilebtn}
-  //                 id="cvFile"
-  //                 onChange={handleCvFileChange}
-  //               />
-  //             </div>
-  //             {!cvFile && (
-  //               <div className={className.smallwarningtext}>
-  //                 *Upload your Evidence here. Max file size 50 MB
-  //               </div>
-  //             )}
-  //             <button type="submit" className={className.button}>
-  //               Send Application
-  //             </button>
-  //           </htmlForm>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 }
 
 export default FIRFormPage;
