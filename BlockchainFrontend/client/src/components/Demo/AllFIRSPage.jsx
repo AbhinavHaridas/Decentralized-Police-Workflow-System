@@ -70,7 +70,7 @@ function AllFIRSPage() {
 
   useEffect(() => {
     if (resetDatePicker) {
-      // fetchAPI(); ???? Check Later
+       fetchAPI(); // ???? Check Later
       setResetDatePicker(false); // Reset it here
     }
   }, [resetDatePicker]);
@@ -276,6 +276,8 @@ return (
           id="grid-first-name"
           type="text"
           placeholder="Enter Transaction Id"
+          value={firTransactionId}
+          onChange={handleFirTransactionIdChange}
         ></input>
       </div>
 

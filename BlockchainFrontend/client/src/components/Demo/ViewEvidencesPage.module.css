@@ -7,8 +7,8 @@
 
 .evidencesContainer {
     display: flex;
-    flex-direction: column;
     margin-bottom: 15%;
+    justify-content: center;
 }
 
 .heading {

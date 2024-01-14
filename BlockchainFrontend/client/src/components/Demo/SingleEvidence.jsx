@@ -50,7 +50,7 @@ export function SingleEvidence({evidence, ownerId, requestingId}) {
       target="_blank"
       rel="noopener"
     >
-      <div className={styles.main}>
+      <div className={`${styles.main} border border-blue-500`}>
         <p>
           <b>Click to see evidence</b>
         </p>
