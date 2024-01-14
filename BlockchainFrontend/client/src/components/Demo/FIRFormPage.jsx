@@ -2,170 +2,171 @@ import React, { useState } from "react";
 import className from "./FIRFormPage.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import useEth from "../../contexts/EthContext/useEth";
+import DatePicker from "./DatePicker";
 
 function FIRFormPage() {
-  // const {
-  //   state: { contract, accounts },
-  // } = useEth();
-  // const location = useLocation();
-  // const navigate = useNavigate();
-  // const [dateOfOffence, setDateOfOffence] = useState("");
-  // const [placeOfOffence, setPlaceOfOffence] = useState("");
-  // const [firContents, setfirContents] = useState("");
-  // const [cvFile, setCvFile] = useState(null);
-  // const [userEmail, setuserEmail] = useState("");
-  // const [crimeType, setCrimeType] = useState(0);
-  // const [ipcSection, setIpcSection] = useState("");
-  // const [suspectDetails, setSuspectDetails] = useState("");
+  const {
+    state: { contract, accounts },
+  } = useEth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [dateOfOffence, setDateOfOffence] = useState("");
+  const [placeOfOffence, setPlaceOfOffence] = useState("");
+  const [firContents, setfirContents] = useState("");
+  const [cvFile, setCvFile] = useState(null);
+  const [userEmail, setuserEmail] = useState("");
+  const [crimeType, setCrimeType] = useState(0);
+  const [ipcSection, setIpcSection] = useState("");
+  const [suspectDetails, setSuspectDetails] = useState("");
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
+  const [resetDatePicker, setResetDatePicker] = useState(false);
 
-  // const officerData = location?.state ? location?.state : null;
-  // const officerId = officerData?.id ? officerData?.id : 1;
-  // const departmentId = officerData?.department_id
-  //   ? officerData?.department_id
-  //   : 1;
+  const officerData = location?.state ? location?.state : null;
+  const officerId = officerData?.id ? officerData?.id : 1;
+  const departmentId = officerData?.department_id
+    ? officerData?.department_id
+    : 1;
 
-  // console.log("Officer Data:", officerData);
+  const handleDateOfOffenceChange = (e) => {
+    setDateOfOffence(e.target.value);
+  };
 
-  // const handleDateOfOffenceChange = (e) => {
-  //   setDateOfOffence(e.target.value);
-  // };
+  const handlePlaceOfOffenceChange = (e) => {
+    setPlaceOfOffence(e.target.value);
+  };
 
-  // const handlePlaceOfOffenceChange = (e) => {
-  //   setPlaceOfOffence(e.target.value);
-  // };
+  const handlefirContentsChange = (e) => {
+    setfirContents(e.target.value);
+  };
 
-  // const handlefirContentsChange = (e) => {
-  //   setfirContents(e.target.value);
-  // };
+  const handleuserEmailChange = (e) => {
+    setuserEmail(e.target.value);
+  };
 
-  // const handleuserEmailChange = (e) => {
-  //   setuserEmail(e.target.value);
-  // };
+  const handleCrimeTypeChange = (e) => {
+    setCrimeType(e.target.value);
+  };
 
-  // const handleCrimeTypeChange = (e) => {
-  //   setCrimeType(e.target.value);
-  // };
+  const handleIpcSectionChange = (e) => {
+    setIpcSection(e.target.value);
+  };
 
-  // const handleIpcSectionChange = (e) => {
-  //   setIpcSection(e.target.value);
-  // };
+  const handleSuspectDetailsChange = (e) => {
+    setSuspectDetails(e.target.value);
+  };
 
-  // const handleSuspectDetailsChange = (e) => {
-  //   setSuspectDetails(e.target.value);
-  // };
+  const handleCvFileChange = (e) => {
+    const file = e.target.files[0];
+    setCvFile(file);
+  };
 
-  // const handleCvFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   setCvFile(file);
-  // };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // PerhtmlForm submission logic here
+    console.log("Date of ofeence:", dateOfOffence);
+    console.log("Place Of offence:", placeOfOffence);
+    console.log("FIR Contents:", firContents);
+    console.log("CV File:", cvFile);
+    console.log("User Email:", userEmail);
+    console.log("Crime Type", crimeType);
+    console.log("IPC Section", ipcSection);
+    console.log("Suspect Details", suspectDetails);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // PerhtmlForm submission logic here
-  //   console.log("Date of ofeence:", dateOfOffence);
-  //   console.log("Place Of offence:", placeOfOffence);
-  //   console.log("FIR Contents:", firContents);
-  //   console.log("CV File:", cvFile);
-  //   console.log("User Email:", userEmail);
-  //   console.log("Crime Type", crimeType);
-  //   console.log("IPC Section", ipcSection);
-  //   console.log("Suspect Details", suspectDetails);
+    const firObj = {
+      date_of_offence: dateOfOffence,
+      place_of_offence: placeOfOffence,
+      fir_contents: firContents,
+      zonal_code: officerData?.zonal_code ? officerData?.zonal_code : 9,
+      crime_type: crimeType,
+      ipc_section: ipcSection,
+      suspect_details: suspectDetails,
+      user_id: 3,
+      assigned_officer_id: officerId,
+    };
 
-  //   const firObj = {
-  //     date_of_offence: dateOfOffence,
-  //     place_of_offence: placeOfOffence,
-  //     fir_contents: firContents,
-  //     zonal_code: officerData?.zonal_code ? officerData?.zonal_code : 9,
-  //     crime_type: crimeType,
-  //     ipc_section: ipcSection,
-  //     suspect_details: suspectDetails,
-  //     user_id: 3,
-  //     assigned_officer_id: officerId,
-  //   };
+    var requestOptions = {
+      method: "POST",
+      body: JSON.stringify(firObj),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+    };
 
-  //   var requestOptions = {
-  //     method: "POST",
-  //     body: JSON.stringify(firObj),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     redirect: "follow",
-  //   };
+    fetch("http://localhost:8000/fir/insertFir", requestOptions)
+      .then((response) => response.json())
+      .then(async (result) => {
+        // alert(
+        //   "FIR Submitted Successfully. Your FIR ID is: " +
+        //     result?.data?.unique_hash
+        // );
 
-  //   fetch("http://localhost:8000/fir/insertFir", requestOptions)
-  //     .then((response) => response.json())
-  //     .then(async (result) => {
-  //       // alert(
-  //       //   "FIR Submitted Successfully. Your FIR ID is: " +
-  //       //     result?.data?.unique_hash
-  //       // );
+        const blockChainResult = await contract.methods
+          .createFIR(
+            result?.data?.["inserted_fir_id"],
+            officerId,
+            result?.data?.unique_hash,
+            crimeType
+          )
+          .send({ from: accounts[0] });
+        console.log(result);
+        alert(
+          blockChainResult?.events?.Result?.returnValues?.message +
+            " Please check your email htmlFor an ID to track your FIR Status"
+        );
 
-  //       const blockChainResult = await contract.methods
-  //         .createFIR(
-  //           result?.data?.["inserted_fir_id"],
-  //           officerId,
-  //           result?.data?.unique_hash,
-  //           crimeType
-  //         )
-  //         .send({ from: accounts[0] });
-  //       console.log(result);
-  //       alert(
-  //         blockChainResult?.events?.Result?.returnValues?.message +
-  //           " Please check your email htmlFor an ID to track your FIR Status"
-  //       );
+        const emailObj = {
+          recipient: userEmail,
+          subject: "FIR Logged",
+          transaction_id: result?.data?.unique_hash,
+        };
 
-  //       const emailObj = {
-  //         recipient: userEmail,
-  //         subject: "FIR Logged",
-  //         transaction_id: result?.data?.unique_hash,
-  //       };
+        var requestOptions = {
+          method: "POST",
+          body: JSON.stringify(emailObj),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          redirect: "follow",
+        };
 
-  //       var requestOptions = {
-  //         method: "POST",
-  //         body: JSON.stringify(emailObj),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         redirect: "follow",
-  //       };
+        try {
+          fetch("http://localhost:8000/fir/generateEmail", requestOptions)
+            .then((response) => response.json())
+            .then((emailResult) => {
+              console.log("Success:", emailResult);
+              try {
+                // Generating a htmlFormData object to store file and firId
+                const htmlFormData = new FormData();
+                htmlFormData.append("file", cvFile);
+                htmlFormData.append("fir_id", result?.data["inserted_fir_id"]);
+                htmlFormData.append("dept_id", departmentId);
 
-  //       try {
-  //         fetch("http://localhost:8000/fir/generateEmail", requestOptions)
-  //           .then((response) => response.json())
-  //           .then((emailResult) => {
-  //             console.log("Success:", emailResult);
-  //             try {
-  //               // Generating a htmlFormData object to store file and firId
-  //               const htmlFormData = new htmlFormData();
-  //               htmlFormData.append("file", cvFile);
-  //               htmlFormData.append("fir_id", result?.data["inserted_fir_id"]);
-  //               htmlFormData.append("dept_id", departmentId);
-
-  //               fetch("http://localhost:8000/fir/insertFirFile", {
-  //                 method: "POST",
-  //                 body: htmlFormData,
-  //               })
-  //                 .then((response) => response.json())
-  //                 .then((result) => {
-  //                   console.log("Success:", result);
-  //                   navigate("/editaccess", {
-  //                     state: {
-  //                       data: { ...officerData },
-  //                       evidence_id: result?.data,
-  //                     },
-  //                   });
-  //                 });
-  //             } catch (e) {
-  //               console.error(e);
-  //             }
-  //           });
-  //       } catch (error) {
-  //         console.error(error);
-  //         throw error;
-  //       }
-  //     })
-  //     .catch((error) => console.log("error", error));
-  // };
+                fetch("http://localhost:8000/fir/insertFirFile", {
+                  method: "POST",
+                  body: htmlFormData,
+                })
+                  .then((response) => response.json())
+                  .then((result) => {
+                    console.log("Success:", result);
+                    navigate("/editaccess", {
+                      state: {
+                        data: { ...officerData },
+                        evidence_id: result?.data,
+                      },
+                    });
+                  });
+              } catch (e) {
+                console.error(e);
+              }
+            });
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
 
   return (
     <>
@@ -177,7 +178,20 @@ function FIRFormPage() {
           </h1>
 
           <form className="max-w-sm mx-auto pb-6">
-            {/* <div>{/date picker/}</div> */}
+            <div className={className.htmlFormvaluecontainer}>
+              <label
+                for="email"
+                className="block mb-2 text-sm font-medium text-blue-700 dark:text-white"
+              >
+                Date of Offence
+              </label>
+              <DatePicker
+                placeholder="Enter Start date"
+                onDateSelect={setDateOfOffence}
+                reset={resetDatePicker}
+                setIsFilterApplied={setIsFilterApplied}
+              />
+            </div>
             <div className="mb-5">
               <label
                 for="email"
@@ -191,12 +205,12 @@ function FIRFormPage() {
                 required
                 type="text"
                 // className={classNamees.placeofoffence}
-                // id="placeofoffence"
-                // value={placeOfOffence}
-                // onChange={handlePlaceOfOffenceChange}
+                id="placeofoffence"
+                value={placeOfOffence}
+                onChange={handlePlaceOfOffenceChange}
               />
             </div>
-            <div className="mb-5">
+            {/* <div className="mb-5">
               <label
                 for="zonalcode"
                 className="block mb-2 text-sm font-medium text-blue-700 dark:text-white"
@@ -208,7 +222,7 @@ function FIRFormPage() {
                 className="shadow-sm bg-gray-50 border border-blue-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                 required
               />
-            </div>
+            </div> */}
             <div className="mb-5">
               <label
                 for="useremail"
@@ -221,6 +235,8 @@ function FIRFormPage() {
                 id="email"
                 className="shadow-sm bg-gray-50 border border-blue-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                 required
+                value={userEmail}
+                onChange={handleuserEmailChange}
               />
             </div>
             <div className="mb-5">
@@ -230,9 +246,9 @@ function FIRFormPage() {
               <select
                 id="crimetype"
                 className="bg-gray-50 border border-blue-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                // //   className={classNamees.crimetypedropdown}
-                // //   value={crimeType}
-                // //   onChange={handleCrimeTypeChange}
+                  // className={classNamees.crimetypedropdown}
+                  value={crimeType}
+                  onChange={handleCrimeTypeChange}
               >
                 <option value="">Select Crime Type</option>
                 <option value="1">Murder</option>
@@ -263,8 +279,8 @@ function FIRFormPage() {
                 type="text"
                 //   className={classNamees.zonalcode}
                 id="ipcsection"
-                //   value={ipcSection}
-                //   onChange={handleIpcSectionChange}
+                  value={ipcSection}
+                  onChange={handleIpcSectionChange}
               />
             </div>
             <div className="mb-5">
@@ -277,9 +293,8 @@ function FIRFormPage() {
                 placeholder=""
                 /* className={classNamees.textarea} */
                 id="firContents"
-                /* rows={2}
                         value={firContents}
-                        onChange={handlefirContentsChange} */
+                        onChange={handlefirContentsChange}
               />
             </div>
 
@@ -293,8 +308,8 @@ function FIRFormPage() {
                 placeholder=""
                 id="suspectdetails"
                 //   rows={2}
-                //   value={suspectDetails}
-                //   onChange={handleSuspectDetailsChange}
+                  value={suspectDetails}
+                  onChange={handleSuspectDetailsChange}
               />
             </div>
             <div className="mb-5">
@@ -314,6 +329,7 @@ function FIRFormPage() {
                                     hover:file:bg-blue-700"
                 id="cvFile"
                 type="file"
+                onChange={handleCvFileChange}
               />
               <div
                 className="mt-1 text-sm text-gray-500 dark:text-gray-300"
@@ -323,7 +339,6 @@ function FIRFormPage() {
               </div>
               {/* //   className={classNamees.chooseFilebtn} */}
               {/* id="cvFile" */}
-              {/* //   onChange={handleCvFileChange} */}
               {/* /> */}
             </div>
             {/* { */}
@@ -332,33 +347,10 @@ function FIRFormPage() {
 
             {/* ) */}
             {/* } */}
-
-            <div className="flex items-start mb-5">
-              <div className="flex items-center h-5">
-                <input
-                  id="terms"
-                  type="checkbox"
-                  value=""
-                  className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                  required
-                />
-              </div>
-              <label
-                for="terms"
-                className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
-                I agree with the{" "}
-                <a
-                  href="#"
-                  className="text-blue-600 hover:underline dark:text-blue-500"
-                >
-                  terms and conditions
-                </a>
-              </label>
-            </div>
             <button
               type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 "
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              onClick={handleSubmit}
             >
               Send Application
             </button>

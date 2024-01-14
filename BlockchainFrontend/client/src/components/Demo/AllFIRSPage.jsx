@@ -70,7 +70,7 @@ function AllFIRSPage() {
 
   useEffect(() => {
     if (resetDatePicker) {
-      fetchAPI();
+      // fetchAPI(); ???? Check Later
       setResetDatePicker(false); // Reset it here
     }
   }, [resetDatePicker]);
@@ -272,7 +272,7 @@ return (
 
       <div id="row4" className="pt-6 pl-6 pr-6">
         <input
-          class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded pb-3 pt-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border border-blue-700"
+          class="appearance-none block w-full bg-gray-50 text-gray-700 border rounded pb-3 pt-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border border-blue-700"
           id="grid-first-name"
           type="text"
           placeholder="Enter Transaction Id"

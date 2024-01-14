@@ -28,7 +28,7 @@ function DatePicker({ placeholder, onDateSelect, reset, setIsFilterApplied }) {
 
   return (
     <input
-      className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded pb-3 pt-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border border-blue-700"
+      className="appearance-none block w-full bg-gray-50 text-gray-700 border rounded pb-3 pt-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border border-blue-700"
       placeholder={placeholder}
       type={isDatePickerOpen ? "date" : "text"}
       onFocus={openDatePicker}

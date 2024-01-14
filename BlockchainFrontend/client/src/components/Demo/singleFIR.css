@@ -1,4 +1,4 @@
-input[type="checkbox"] {
+.wrap-collabsible input[type="checkbox"] {
   display: none;
 }
 .wrap-collabsible {

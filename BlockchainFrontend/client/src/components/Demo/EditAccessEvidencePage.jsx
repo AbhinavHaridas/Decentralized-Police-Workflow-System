@@ -47,7 +47,7 @@ function EditAccessEvidencePage() {
 
   const sendAccess = async () => {
     if (!dept && !evidenceId) alert("Please enter departments or evidence");
-
+    console.log(dept);
     try {
       fetch("http://localhost:8000/evidence/addEvidenceAccess", {
         method: "POST",
@@ -82,26 +82,34 @@ function EditAccessEvidencePage() {
         <h1 className="pt-0 text-3xl font-bold mb-4 text-blue-700 text-center">
           Share Evidence
         </h1>
-        <div className="checkBoxes">
-                    {Object.keys(departments).map((department, index) => {
-                        // Check if the departmentId is not the one to be excluded
-                        if (departmentId !== parseInt(department)) {
-                            return (
-                                <div key={index} className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700"
-                                >
-                                    <input className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'type="checkbox"
-                                        // onChange={(e) => handleCheck(e, parseInt(department))}
-                                    />
-                                    <h3>{departments[parseInt(department)]}</h3>
-                                </div>
-                            );
-                        }
-                        // Return null if the departmentId is the one to be excluded
-                        return null;
-                    })}
+        <div className="flex flex-col justify-around gap-5 p-10">
+          {Object.keys(departments).map((department, index) => {
+            // Check if the departmentId is not the one to be excluded
+            if (departmentId !== parseInt(department)) {
+              return (
+                <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700 gap-5 p-5">
+                  <input
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    type="checkbox"
+                    onChange={(e) => handleCheck(e, parseInt(department))}
+                  />
+                  <h3>{departments[parseInt(department)]}</h3>
                 </div>
+              );
+            }
+            // Return null if the departmentId is the one to be excluded
+            return null;
+          })}
+        <button
+          type="submit"
+          class="text-white  bg-blue-700 hover:bg-white hover:text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 border border-blue-700"
+          onClick={sendAccess}
+        >
+          Send Access
+        </button>
+        </div>
 
-        <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700 ">
+        {/* <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700 ">
           <input
             id="bordered-checkbox-1"
             type="checkbox"
@@ -115,19 +123,9 @@ function EditAccessEvidencePage() {
           >
             Default radio
           </label>
-        </div>
-
-        <div
-          className="pt-4 flex items-center justify-center button-1"
-          // onClick={sendAccess}
-        >
-          <button
-            type="submit"
-            class="text-white  bg-blue-700 hover:bg-white hover:text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 "
-          >
-            Send Access
-          </button>
-        </div>
+        </div> */}
+        {/* <div className="pt-4 flex items-center justify-center button-1"> */}
+        {/* </div> */}
       </div>
     </div>
   );
